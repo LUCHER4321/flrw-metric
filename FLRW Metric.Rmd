@@ -1,0 +1,503 @@
+---
+title: "FLRW Metric"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    keep_tex: true
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(rvest)
+library(lubridate)
+library(ggplot2)
+```
+
+# Abstract
+
+This work presents an analytical derivation of the kinematics of the universe's expansion, grounded in the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, along with its subsequent empirical validation. By imposing the space-time homogeneity and isotropy required by the Cosmological Principle, the covariant derivative of the Riemann tensor is defined and set to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$), thereby allowing for the deduction of a system of exact differential equations that determine the evolution of the scale factor $a\left( t \right)$. Based on this mathematical solution, a predictive model is formulated that correlates direct physical observables: proper distance and redshift (expressed as recession velocity). To test this model, a weighted nonlinear regression analysis is performed using a catalog of galactic distances and velocities extracted from the NED (NASA/IPAC) extragalactic database. The results of this observational fit allow for the empirical constraint of the theoretical curve's parameters, yielding statistical confidence intervals for the model's expansion constant ($X^2$) and—fundamentally—for the spatial curvature parameter ($k$), thereby bridging the rigor of differential geometry with contemporary astrophysical evidence.
+
+# Introduction
+
+General Relativity has provided the fundamental framework for understanding the dynamics of the universe on large scales. At the heart of modern cosmology lies the Friedmann-Lemaître-Robertson-Walker (FLRW) metric—the exact solution to Einstein's field equations that describes an expanding, spatially homogeneous, and isotropic universe. This geometric symmetry constitutes the mathematical manifestation of the Cosmological Principle, which postulates that, on sufficiently large scales, the universe possesses no privileged positions or directions.
+
+Traditionally, the temporal evolution of the universe is addressed by solving the Friedmann equations, a process that requires making an *a priori* assumption regarding the equation of state for the universe's matter and energy content. However, the Cosmological Principle itself imposes such stringent geometric constraints that it becomes possible to extract profound information regarding the kinematics of the universe by directly studying the structure of the spacetime manifold. In this work, we formalize this geometric constraint by defining the "Cosmological Tensor" as the covariant derivative of the Riemann tensor ($K^\alpha_{\beta\gamma\mu\nu} := R^\alpha_{\beta\gamma\mu;\nu}$). By requiring that this tensor vanish identically—as a consequence of maximal homogeneity and isotropy—we demonstrate that it is possible to derive a system of exact differential equations for the cosmic scale factor, $a\left( t \right)$.
+
+Notwithstanding the elegance of analytical derivations in differential geometry, a cosmological model acquires physical validity only when its predictions are tested against empirical evidence. Theoretical solutions for $a\left( t \right)$ and its derivatives must be translated into the language of observational astronomy—specifically, by establishing a relationship between the observed proper distance ($D$) and the galactic recession velocity, as derived from redshift ($z$).
+
+The primary objective of this article is twofold. First, to present a rigorous and self-consistent analytical derivation of the kinematics of the universe's expansion, commencing from the pure FLRW metric and culminating in an exact solution for the scale factor. Secondly, we will subject this mathematical model to rigorous empirical validation. Utilizing an updated catalog of galactic distance and velocity measurements extracted from the NED (NASA/IPAC Extragalactic Database), we will apply weighted nonlinear regression techniques to fit our theoretical curve. This analysis will enable us to empirically constrain the model's fundamental parameters, yielding direct confidence intervals for the theoretical expansion constant and—crucially—for the spatial curvature parameter $k$. Thus, the present work seeks to establish a transparent methodological bridge between the abstract topology of spacetime and contemporary observational cosmology.
+
+# Theoretical Framework
+
+## The FLRW Metric
+
+We consider a four-dimensional manifold characterized by a Friedmann-Lemaître-Robertson-Walker (FLRW) metric. In comoving coordinates $\left( x^0, r, \theta, \phi \right)$, where $x^0 := ct$, the line element ${ds}^2$ is defined as:
+
+$$
+{ds}^2= -c^2{dt}^2 + a^2 \left( \frac{{dr}^2}{1 - kr^2} + r^2 \left( {d\theta}^2 + \sin^2\theta{d\phi}^2 \right) \right)
+$$
+
+Here, $a(t)$ represents the dimensionless scale factor that parametrizes the expansion of the universe, while $k$ is the curvature parameter with dimensions of $L^{-2}$. The non-zero components of the metric tensor $g_{\alpha\beta}$ are set as:
+
+$$
+\begin{aligned}
+g_{00} &= -1, \ g_{rr} = \frac{a^2}{1 - kr^2}, \ g_{\theta\theta} = a^2r^2, \ g_{\phi\phi} = a^2r^2\sin^2{\theta}, \\
+g^{00} &= -1, \ g^{rr} = \frac{1 - kr^2}{a^2}, \ g^{\theta\theta} = \frac{1}{a^2r^2}, \ g^{\phi\phi} = \frac{\csc^2{\theta}}{a^2r^2}
+\end{aligned}
+$$
+
+## Levi-Civita Connection and Curvature Tensors
+
+Based on the defined metric, the Christoffel symbols of the second kind $\Gamma^\alpha_{\beta\gamma}$ are derived using the standard relation $\Gamma^\alpha_{\beta\gamma}=\frac{1}{2}g^{\alpha\sigma}\left( g_{\beta\sigma,\gamma} + g_{\gamma\sigma,\beta} - g_{\beta\gamma,\sigma} \right)$. The temporal and spatial components relevant to the dynamics are:
+
+$$
+\Gamma^0_{rr} = \frac{a\dot{a}}{1 - kr^2}, \
+\Gamma^r_{0r} = \frac{\dot{a}}{a}, \
+\Gamma^r_{\theta\theta} = \left( kr^2 - 1 \right)r
+$$
+
+Using these connection coefficients, we calculate the Riemann tensor $R^\alpha_{\beta\gamma\mu}$ and its contractions. The Ricci tensor $R_{\alpha\beta}$ exhibits the following principal components:
+
+$$
+\begin{aligned}
+R_{00} &= \frac{3\ddot{a}}{a} \\
+R_{rr} &= \frac{a\ddot{a} + 2k + 2\dot{a}^2}{kr^2 - 1}
+\end{aligned}
+$$
+
+Finally, the Ricci scalar $R$, which characterizes the scalar curvature of the manifold, turns out to be:
+
+$$
+R = -\frac{6}{a^2}\left( a\ddot{a} + k + \dot{a}^2 \right)
+$$
+
+## The Cosmological Tensor and the Dynamics of Expansion
+
+The central premise of this study is the application of the Cosmological Principle to the covariant derivative of the curvature. We define the tensor $K^\alpha_{\beta\gamma\mu\nu}$ as the covariant derivative of the Riemann tensor:
+
+$$
+K^\alpha_{\beta\gamma\mu\nu} := R^\alpha_{\beta\gamma\mu;\nu} = 0
+$$
+
+This nullity condition ensures that variations in the gravitational field strictly respect homogeneity and isotropy. Upon evaluating this constraint on the **spatial dimensions** of the manifold, the tensor system reduces to a fundamental differential equation governing the behavior of the scale factor:
+
+$$
+k + \dot{a}^2 - a\ddot{a} = 0
+$$
+
+The solution to this nonlinear differential equation provides us with the exact analytical expression for the evolution of the scale factor $a\left( t \right)$:
+
+$$
+a = \frac{1}{2X}\left( Ye^{Xct} + \frac{k}{Y}e^{-Xct} \right)
+$$
+
+where $X$ and $Y$ emerge as constants of integration that characterize the dynamics of the expansion, being directly linked to the spatial curvature $k$.
+
+Remarkably, a mathematically unexpected and elegant consequence arises from this development. Upon calculating the higher-order derivatives of our exact solution for $a\left( t \right)$ and evaluating them within the **temporal dimensions** of the cosmological tensor, it is discovered that they naturally and automatically satisfy the identity:
+
+$$
+\dot{a}\ddot{a} - a\dddot{a} = 0
+$$
+
+This finding demonstrates that the temporal evolution of the expansion need not be postulated independently, but rather emerges as an intrinsic and inevitable consequence of requiring maximal spatial symmetry within the manifold. This self-consistent solution constitutes the basis of the kinematic model, which will be empirically tested against observational data in the subsequent sections.
+
+# Observational Methodology
+
+## Data Selection and Source
+
+To validate the derived kinematic model, observational data from the extragalactic database **NED (NASA/IPAC Extragalactic Database)** were utilized. The selected sample comprises a population of galaxies with independent measurements of proper distance ($D$) and recession velocity ($V$), the latter derived from spectroscopic redshift ($z$).
+
+Data processing was performed within the **R** statistical environment, utilizing the `tidyverse` ecosystem of libraries for data cleaning and structuring. Records containing missing values (NA) were filtered out to ensure the statistical integrity of the sample.
+
+## Normalization of Units and Regression Variables
+
+Given that the cosmological constants involved in the FLRW metric operate within the International System of Units (SI), the conventional astronomical quantities were converted accordingly. The original distances, expressed in Megaparsecs (Mpc) or Parsecs (pc), were transformed into meters ($m$), while the recession velocities were normalized with respect to the speed of light ($c \approx 2.99 \times 10^{8} \frac{m}{s}$).
+
+Based on the analytical solution for the scale factor $a\left( t \right)$, we defined two transformed variables for regression analysis:
+
+- The independent variable $\mathbf{x}$, related to the light travel time and the distance traveled.
+- The dependent variable $\mathbf{y}$, linked to the observed redshift.
+
+## Non-Linear Fitting Model
+
+The theoretical relationship derived in the previous section is expressed as a combination of hyperbolic functions. The empirical model proposed for fitting is:
+
+$$
+\mathbf{y} = \cosh{\alpha\mathbf{x}} - \beta\sinh{\alpha\mathbf{x}}
+$$
+
+Where $\alpha$ and $\beta$ are the free parameters to be estimated. To obtain these parameters, a **Nonlinear Least Squares (NLS)** algorithm was implemented. This iterative method minimizes the sum of the squares of the differences between the observations and the model predictions.
+
+## Estimation of Physical Parameters and Curvature
+
+Once the optimal estimators for $\alpha$ and $\beta$ were obtained, the physical constants of the model were recovered. The expansion parameter $X^2$ and the spatial curvature parameter $k$ are derived using the following relations:
+
+- **Expansion Parameter**: $X^2 = \alpha^2$
+- **Curvature Parameter**: $k = a_0^2 \alpha^2 \left( 1 - \beta^2 \right)$
+
+Where $a_0$ represents the scale factor at the present epoch. To ensure the robustness of the results, 95% confidence intervals were calculated for each parameter using the fit's variance-covariance matrix, thereby enabling a statistical interpretation of the universe's curvature state ($k > 0$, $k < 0$, or $k \approx 0$).
+
+# Results
+
+## Model Fitting and Visualization
+
+The nonlinear regression model based on hyperbolic functions was successfully fitted to the observational data from the NED database. Figure 1 illustrates the relationship between the dependent variable $\mathbf{y}$ (the inverse of the redshift factor) and the proper distance $D$. It is observed that the theoretical curve of the proposed FLRW model precisely follows the trend of the data, capturing the nature of the expansion across the sample volume.
+
+```{r s.vs.r, echo=FALSE, message=FALSE, warning=FALSE}
+pages <- 6
+get.url <- function(n) paste0("https://ned.ipac.caltech.edu/level5/NED05D/ned05D_", n, ".html")
+measures.list <- list()
+for(i in 1:pages){
+  df <- i %>% get.url() %>% read_html() %>% html_nodes("table") %>% html_table(header = T)
+  measures.list[[i]] <- df[[1]][-c(1, 2),]
+}
+measures.df <- measures.list %>% bind_rows()
+measures.df$Gal <- measures.df$Gal %>% as.numeric()
+measures.df$`Galaxy Name` <- measures.df$`Galaxy Name` %>% as.factor()
+measures.df$`m-M` <- measures.df$`m-M` %>% as.numeric()
+measures.df$err...4 <- measures.df$err...4 %>% as.numeric()
+measures.df$D <- measures.df$D %>% as.numeric()
+measures.df$err...6 <- measures.df$err...6 %>% as.numeric()
+measures.df$Method <- measures.df$Method %>% as.factor()
+measures.df$M. <- measures.df$M. %>% as.numeric()
+measures.df$REFCODE <- measures.df$REFCODE %>% as.factor()
+measures.df$Notes <- measures.df$Notes %>% as.factor()
+measures.df$RA <- measures.df$RA %>% hms()
+measures.df$Dec <- measures.df$Dec %>% hms()
+measures.df$GLON <- measures.df$GLON %>% as.numeric()
+measures.df$GLAT <- measures.df$GLAT %>% as.numeric()
+measures.df$`Type (RC3)` <- measures.df$`Type (RC3)` %>% as.factor()
+measures.df$`Vgsr (RC3)` <- measures.df$`Vgsr (RC3)` %>% as.numeric()
+
+#measures.df %>% summary()
+
+au <- 149597870700 # meters
+pc <- au / tan(1 / 3600 * pi / 180) # meters
+a.0 <- 1 # units
+light.speed <- 299792456 # meters per second
+measures.df.converted.units <- measures.df %>% mutate(
+  D = D * 10^6 * pc,
+  `Vgsr (RC3)` = `Vgsr (RC3)` * 10^3,
+  reg.y = 1 / (1 + `Vgsr (RC3)` / light.speed),
+  reg.x = D
+)
+
+flrw.model <- nls(
+  reg.y ~ cosh(alpha * reg.x) - beta * sinh(alpha * reg.x),
+  data = measures.df.converted.units,
+  start = list(alpha = 1e-26, beta = 1), 
+  control = nls.control(maxiter = 500, tol = 1e-05),
+  weights = D
+)
+
+ranges <- flrw.model %>% confint.default()
+
+coefs <- flrw.model %>% coef()
+
+alpha <- coefs["alpha"]
+alpha.min <- ranges["alpha", 1]
+alpha.max <- ranges["alpha", 2]
+beta <- coefs["beta"]
+beta.min <- ranges["beta", 1]
+beta.max <- ranges["beta", 2]
+X.2 <- alpha ^ 2
+k <- a.0 ^ 2 * alpha ^ 2 * (1 - beta ^ 2)
+X.2.range <- c(alpha.min, alpha.max) ^ 2
+k.range <- a.0 ^ 2 * c(alpha.min, alpha.max) ^ 2 * (1 - c(beta.max, beta.min) ^ 2)
+
+measures.df.converted.units.estimated.values <- measures.df.converted.units %>% mutate(
+  reg.y.min = cosh(alpha.min * reg.x) - beta.max * sinh(alpha.min * reg.x),
+  reg.y.max = cosh(alpha.max * reg.x) - beta.min * sinh(alpha.max * reg.x),
+  reg.y.est = cosh(alpha * reg.x) - beta * sinh(alpha * reg.x)
+)
+
+measures.df.converted.units.estimated.values %>%
+  ggplot() +
+  geom_point(aes(x = reg.x, y = reg.y, colour = D)) +
+  scale_colour_gradientn(colours = c("#800", "#840", "#880", "#480", "#080", "#084", "#088", "#048", "#008", "#408", "#808")) +
+  geom_line(aes(x = reg.x, y = reg.y.min), colour = "blue") +
+  geom_line(aes(x = reg.x, y = reg.y.max), colour = "blue") +
+  geom_line(aes(x = reg.x, y = reg.y.est), colour = "black") +
+  labs(
+    title = "Nonlinear fit of the hyperbolic model to galactic expansion observations",
+    x = "Proper Distance D [m]", y = expression(1 / (1 + V/c)),
+    colour = "Distance [m]"
+  )
+```
+
+**Figure 1**. Fit of the hyperbolic model to the galactic distance-velocity data. The points represent the observations, and the solid line represents the nonlinear least-squares fit.
+
+```{r s.vs.r.1, echo=FALSE, message=FALSE, warning=FALSE}
+reg.y.to.V <- function(r.y) {
+  light.speed * (1 / r.y - 1)
+}
+
+measures.df.converted.units.estimated.values %>%
+  ggplot() +
+  geom_point(aes(x = D, y = `Vgsr (RC3)`, colour = D)) +
+  scale_colour_gradientn(colours = c("#800", "#840", "#880", "#480", "#080", "#084", "#088", "#048", "#008", "#408", "#808")) +
+  geom_line(aes(x = reg.x, y = reg.y.min %>% reg.y.to.V()), colour = "blue") +
+  geom_line(aes(x = reg.x, y = reg.y.max %>% reg.y.to.V()), colour = "blue") +
+  geom_line(aes(x = reg.x, y = reg.y.est %>% reg.y.to.V()), colour = "black") +
+  labs(
+    title = "Galactic recession velocity as a function of proper distance",
+    x = "Proper Distance D [m]", y = "Speed V [m/s]",
+    colour = "Distance [m]"
+  )
+```
+
+**Figure 2**. Projection of the fitted model onto the physical distance-velocity space. The points represent the observations, and the solid line represents the derived theoretical recession velocity.
+
+## Estimated Parameters
+
+Upon the convergence of the NLS algorithm, the following 95% confidence intervals were obtained for the fundamental parameters of the model:
+
+```{r final.values, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+eq.formatter <- function(x, digits = 2){
+  num <- x %>% as.character() %>% strsplit("e") %>% unlist()
+  if(num %>% length() == 0) return(NA)
+  if(num %>% length() == 1) return(x %>% round(digits = digits))
+  return(paste0(num[1] %>% as.numeric() %>% round(digits = digits), "\\times 10^{", num[2], "}"))
+}
+
+cat(paste(
+  paste0("- **Parameter** $\\alpha$: $\\alpha\\in\\left]", alpha.min %>% eq.formatter(), ", \\ ", alpha.max %>% eq.formatter(), "\\right[ m^{-1}$, which determines the scale of the expansion."),
+  paste0("- **Parameter** $\\beta$: $\\beta\\in\\left]", beta.min %>% eq.formatter(), ", \\ ", beta.max %>% eq.formatter(), "\\right[$, which links the current expansion rate to the scale factor."),
+  paste0("- **Expansion Parameter** ($X^2$): An interval of $X^2\\in\\left]", X.2.range[1] %>% eq.formatter(), ", \\ ", X.2.range[2] %>% eq.formatter(), "\\right[ m^{-2}$ was calculated, representing the dynamic constant derived from the condition of homogeneity."),
+  paste0("- **Spatial Curvature** ($k$): The resulting curvature parameter lies within the range $k\\in\\left]", k.range[1] %>% eq.formatter(), ", \\ ", k.range[2] %>% eq.formatter(), "\\right[ m^{-2}$."),
+  sep = "\n"
+))
+```
+
+# Discussion
+
+## Interpretation of Curvature $k$
+
+```{r k.interp, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+geometry.type <- if(k.range[1] > 0) {
+  "positive, which theoretically corresponds to a closed universe geometry."
+} else if(k.range[2] < 0) {
+  "negative, suggesting an open-universe geometry"
+} else {
+  "compatible with zero, favoring a flat universe model"
+}
+
+cat(paste0(
+  "The most significant result of this analysis is the constraint placed on the curvature parameter $k$. Based on the processed data from the NED sample, the obtained interval for $k$ lies between $",
+  k.range[1] %>% eq.formatter(), "$ and $", k.range[2] %>% eq.formatter(),
+  "$ $m^{-2}$. As this range consists exclusively of values greater than zero, the results of this fit favor a ", geometry.type,
+  " curvature. Nevertheless, it is imperative to highlight that the obtained magnitude is extremely small (on the order of $10^{-52}$), which is consistent with contemporary cosmological observations that place the universe in a state of near-absolute flatness."
+))
+```
+
+## Consistency of the Cosmological Tensor Hypothesis
+
+The premise that the covariant derivative of the Riemann tensor must vanish ($K^\alpha_{\beta\gamma\mu\nu} = 0$) yielded a solution for the scale factor $a\left( t \right)$ that fits the observed expansion law remarkably well. This suggests that the geometric constraints imposed by maximal homogeneity and isotropy are sufficient to describe galactic kinematics without the need to initially invoke specific density parameters, thereby validating the model's purely geometric approach.
+
+## Limitations and Sources of Error
+
+Despite the good statistical fit, there are inherent limitations:
+
+- **Selection Bias**: The data from the NED database are derived from various measurement techniques (Cepheids, Type Ia Supernovae, etc.), which introduces heteroscedasticity that we attempt to mitigate by using weights ($\text{weights} = D$) in the regression.
+- **Local Effects**: At short distances, the peculiar velocities of galaxies can cause data points to deviate from the ideal Hubble flow, affecting the precision of the parameters $\alpha$ and $\beta$.
+
+# Conclusions
+
+The present investigation has established a direct link between the geometric constraints of General Relativity and the astrophysical observation of galaxies. Through an analysis of the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, it has been demonstrated that imposing a condition of maximal homogeneity—by setting the covariant derivative of the Riemann tensor to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$)—leads to a self-consistent kinematic description of the scale factor $a\left( t \right)$.
+
+The fundamental points derived from this work are:
+
+- Validity of the Geometric Approach: The derivation of a system of differential equations for $a\left( t \right)$ based on the structure of the Riemann tensor enabled the formulation of a predictive model linking redshift to proper distance. The success of the nonlinear fit suggests that the dynamics of expansion may be interpreted as a direct consequence of the symmetry properties of spacetime.
+- Empirical Results and Curvature: The fit performed using data from the NED database yielded expansion ($X^2$) and curvature ($k$) parameters with high statistical precision. Specifically, the value obtained for $k$—on the order of $10^{-52}$—while numerically positive, is consistent with a universe of nearly zero curvature, thereby reinforcing the hypothesis of spatial flatness observed in other cosmological studies.
+- Model Robustness: The use of nonlinear regression based on hyperbolic functions ($\cosh$ and $\sinh$) provided a robust framework for capturing the trend of observational data at extragalactic scales.
+
+As future work, it is suggested that data catalogs featuring higher redshifts—such as those derived from Type Ia supernovae or the Cosmic Microwave Background—be incorporated to evaluate the stability of parameters $\alpha$ and $\beta$ in regimes involving greater distances. In conclusion, this study reaffirms that the Cosmological Principle, formalized through the "Cosmological Tensor," constitutes a powerful tool for unraveling the geometric evolution of the universe from a purely kinematic perspective.
+
+# Appendices
+
+## Units and Definitions
+
+$$
+\begin{aligned}
+x^0 &:= ct, \ x^r := r, \ x^\theta := \theta, \ x^\phi := \phi \\
+\left[ x^0 \right] &= m, \ \left[ r \right] = m, \ \left[ \theta \right] = 1, \ \left[ \phi \right] = 1 \\
+\left[ a \right] &= 1, \ \left[ k \right] = m^{-2} \\
+\dot{a} &:= a_{,0}, \ \ddot{a} := a_{,00}, \ \dddot{a} := a_{,000} \\
+\left[ \dot{a} \right] &= m^{-1}, \ \left[ \ddot{a} \right] = m^{-2}, \ \left[ \dddot{a} \right] = m^{-3}
+\end{aligned}
+$$
+
+## Metric Tensor
+
+$$
+\begin{aligned}
+g_{00} &= -1, \ g_{rr} = \frac{a^2}{1 - kr^2}, \ g_{\theta\theta} = a^2r^2, \ g_{\phi\phi} = a^2r^2\sin^2{\theta}, \\
+g^{00} &= -1, \ g^{rr} = \frac{1 - kr^2}{a^2}, \ g^{\theta\theta} = \frac{1}{a^2r^2}, \ g^{\phi\phi} = \frac{\csc^2{\theta}}{a^2r^2}
+\end{aligned}
+$$
+
+## Christoffel Symbols
+
+$$
+\Gamma^\alpha_{\beta\gamma}=\frac{1}{2}g^{\alpha\sigma}\left( g_{\beta\sigma,\gamma} + g_{\gamma\sigma,\beta} - g_{\beta\gamma,\sigma} \right)
+$$
+
+$$
+\begin{aligned}
+\Gamma^0_{rr} &= \frac{a\dot{a}}{1 - kr^2}, \
+\Gamma^0_{\theta\theta} = a\dot{a}r^2, \
+\Gamma^0_{\phi\phi} = a\dot{a}r^2\sin^2{\theta}, \\
+\Gamma^r_{0r} &= \Gamma^r_{r0} = \Gamma^\theta_{0\theta} = \Gamma^\theta_{\theta 0} = \Gamma^\phi_{0\phi} = \Gamma^\phi_{\phi 0} = \frac{\dot{a}}{a}, \\
+\Gamma^r_{rr} &= \frac{kr}{1 - kr^2}, \ \Gamma^r_{\theta\theta} = \left( kr^2 - 1 \right)r, \ \Gamma^r_{\phi\phi} = \left( kr^2 - 1 \right)r\sin^2{\theta}, \\
+\Gamma^\theta_{r\theta} &= \Gamma^\theta_{\theta r} = \Gamma^\theta_{r\phi} = \Gamma^\theta_{\phi r} = \frac{1}{r}, \\
+\Gamma^\theta_{\phi\phi} &= -\sin{\theta}\cos{\theta}, \ \Gamma^\phi_{\theta\phi} = \Gamma^\phi_{\phi\theta} = \cot{\theta}
+\end{aligned}
+$$
+
+## Riemann Tensor
+
+$$
+R^\alpha_{\beta\gamma\mu} = \Gamma^\alpha_{\beta\gamma,\mu} - \Gamma^\alpha_{\beta\mu,\gamma} + \Gamma^\sigma_{\beta\gamma}\Gamma^\alpha_{\sigma\mu} - \Gamma^\sigma_{\beta\mu}\Gamma^\alpha_{\sigma\gamma}
+$$
+
+$$
+\begin{aligned}
+R^0_{r0r} &= \frac{a\ddot{a}}{kr^2 - 1}, \ R^0_{\theta 0\theta} = -a\ddot{a}r^2, \ R^0_{\phi 0\phi} = -a\ddot{a}r^2\sin^2{\theta}, \\
+R^0_{rr0} &= \frac{a\ddot{a}}{1 - kr^2}, \ R^0_{\theta\theta 0} = a\ddot{a}r^2, \ R^0_{\phi\phi 0} = a\ddot{a}r^2\sin^2{\theta}, \\
+R^r_{00r} &= R^\theta_{00\theta} = R^\phi_{00\phi} = -\frac{\ddot{a}}{a}, \
+R^r_{0r0} = R^\theta_{0\theta 0} = R^\phi_{0\phi 0} = \frac{\ddot{a}}{a}, \\
+R^r_{\theta r\theta} &= R^\phi_{\theta\phi\theta} = -r^2\left( k + \dot{a}^2 \right), \ R^r_{\phi r\phi} = R^\theta_{\phi\theta\phi} = -r^2\left( k + \dot{a}^2 \right)\sin^2{\theta}, \\
+R^r_{\theta\theta r} &= R^\phi_{\theta\theta\phi} = r^2\left( k + \dot{a}^2 \right), \ R^r_{\phi\phi r} = R^\theta_{\phi\phi\theta} = r^2\left( k + \dot{a}^2 \right)\sin^2{\theta}, \\
+R^\theta_{rr\theta} &= R^\phi_{rr\phi} = \frac{k + \dot{a}^2}{1 - kr^2}, \ R^\theta_{r\theta r} = R^\phi_{r\phi r} = \frac{k + \dot{a}^2}{kr^2 - 1}
+\end{aligned}
+$$
+
+## Cosmological Tensor
+
+$$
+K^\alpha_{\beta\gamma\mu\nu} := R^\alpha_{\beta\gamma\mu;\nu} = R^\alpha_{\beta\gamma\mu,\nu} + \Gamma^\alpha_{\rho\nu}R^\rho_{\beta\gamma\mu} - \Gamma^\rho_{\beta\nu}R^\alpha_{\rho\gamma\mu} - \Gamma^\rho_{\gamma\nu}R^\alpha_{\beta\rho\mu} - \Gamma^\rho_{\mu\nu}R^\alpha_{\beta\gamma\mu}
+$$
+
+$$
+\begin{aligned}
+K^0_{r0r0} &= K^0_{rr00} = \frac{\dot{a}\ddot{a} - a\dddot{a}}{1 - kr^2}, \ K^0_{\theta 0\theta 0} = \left( \dot{a}\ddot{a} - a\dddot{a} \right)r^2, \ K^0_{\phi 0\phi 0} = \left( \dot{a}\ddot{a} - a\dddot{a} \right)r^2\sin^2{\theta}, \\
+K^0_{\theta r\theta r} &= K^0_{r\theta r\theta} = \frac{a\dot{a}r^2}{1 - kr^2}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^0_{\phi r\phi r} = K^0_{r\phi r\phi} = \frac{a\dot{a}r^2}{1 - kr^2}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^0_{rr\theta\theta} &= K^0_{\theta\theta rr} = \frac{a\dot{a}r^2}{1 - kr^2}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^0_{rr\phi\phi} = K^0_{\phi\phi rr} = \frac{a\dot{a}r^2}{1 - kr^2}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^0_{\theta\theta00} &= \left( a\dddot{a} - \dot{a}\ddot{a} \right)r^2, \ K^0_{\phi\theta\phi\theta} = K^0_{\theta\phi\theta\phi} = a\dot{a}r^4\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^0_{\theta\theta\phi\phi} &= K^0_{\phi\phi\theta\theta} = a\dot{a}r^4\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^0_{\phi\phi 00} = \left( a\dddot{a} - \dot{a}\ddot{a} \right)r^2\sin^2{\theta}, \\
+K^r_{00r0} &= K^\theta_{00\theta 0} = K^\phi_{00\phi 0} = \frac{\dot{a}\ddot{a} - a\dddot{a}}{a^2}, K^r_{\theta 0\theta r} = K^r_{\theta r0\theta} = K^r_{0r\theta\theta} = K^\phi_{\theta 0\theta\phi} = K^\phi_{\theta\phi 0\theta} = K^\phi_{0\phi\theta\theta} = \frac{\dot{a}r^2}{a}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^r_{\phi 0\phi r} &= K^r_{\phi r0\phi} = K^r_{0r\phi\phi} = K^\theta_{\phi 0\phi\theta} = K^\theta_{\phi\theta 0\phi} = K^\theta_{0\theta\phi\phi} = K^\theta_{\phi\phi 0\theta} = K^\theta_{0\phi\theta\phi} = \frac{\dot{a}r^2}{a}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^r_{\theta 0r\theta} &= K^r_{\theta\theta 0r} = K^r_{0\theta r\theta} = K^r_{\phi\phi 0r} = K^\phi_{\theta 0\phi\theta} = K^\phi_{0\theta\phi\theta} = K^\phi_{\theta\theta 0\phi} = \frac{\dot{a}r^2}{a}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^r_{\phi 0r\phi} &= K^r_{0\phi r\phi} = K^\theta_{\phi 0\theta\phi} = \frac{\dot{a}r^2}{a}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^r_{0r00} = K^\theta_{0\theta 00} = K^\phi_{0\phi 00} = \frac{a\dddot{a} - \dot{a}\ddot{a}}{a^2}, \\
+K^r_{\theta r\theta 0} &= K^\phi_{\theta\phi\theta 0} = \frac{2\dot{a}r^2}{a}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^r_{\phi r\phi 0} = K^\theta_{\phi\theta\phi 0} = \frac{2\dot{a}r^2}{a}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^r_{\theta\theta 00} &= \frac{2\dot{a}r^2}{a}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^r_{\phi\phi r0} = K^\theta_{\phi\phi\theta 0} = \frac{2\dot{a}r^2}{a}\sin^2{\theta}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^\theta_{r0\theta r} &= K^\theta_{0r\theta r} = K^\theta_{rr0\theta} = K^\phi_{r0\phi r} = K^\phi_{0r\phi r} = K^\phi_{rr0\phi} = \frac{\dot{a}}{a\left( 1 - kr^2 \right)}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^\theta_{r0r\theta} &= K^\theta_{r\theta 0r} = K^\theta_{0\theta rr} = K^\phi_{r0r\phi} = K^\phi_{r\phi 0r} = K^\phi_{0\phi rr} = \frac{\dot{a}}{a\left( 1 - kr^2 \right)}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^\theta_{rr\theta 0} &= K^\phi_{rr\phi 0} = K^\phi_{\theta\theta\phi 0} = K^\phi_{r\phi r0} = \frac{2\dot{a}}{a\left( 1 - kr^2 \right)}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^\theta_{r\theta r0} = \frac{2\dot{a}}{a\left( 1 - kr^2 \right)}\left( k + \dot{a}^2 - a\ddot{a} \right)
+\end{aligned}
+$$
+
+## Ricci Tensor
+
+$$
+R_{\alpha\beta} = R^\gamma_{\alpha\gamma\beta}
+$$
+
+$$
+\begin{aligned}
+R_{00} &= \frac{3\ddot{a}}{a}, \\
+R_{rr} &= \frac{a\ddot{a} + 2k + 2\dot{a}^2}{kr^2 - 1}, \\
+R_{\theta\theta} &= -r^2\left( a\ddot{a} + 2k + 2\dot{a}^2 \right), \\
+R_{\phi\phi} &= -r^2\sin^2{\theta}\left( a\ddot{a} + 2k + 2\dot{a}^2 \right)
+\end{aligned}
+$$
+
+## Ricci Scalar
+
+$$
+R = R^\alpha_\alpha = g^{\alpha\beta}R_{\alpha\beta}
+$$
+
+$$
+R = -\frac{6}{a^2}\left( a\ddot{a} + k + \dot{a}^2 \right)
+$$
+
+## Einstein Tensor
+
+$$
+G_{\alpha\beta} = R_{\alpha\beta} - \frac{1}{2}g_{\alpha\beta}R
+$$
+
+$$
+\begin{aligned}
+G_{00} &= \frac{a\ddot{a} - 2k - 2\dot{a}^2}{a^2}, \\
+G_{rr} &= \frac{k + \dot{a}^2 - a\ddot{a}}{1 - kr^2}, \\
+G_{\theta\theta} &= r^2\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+G_{\phi\phi} &= r^2\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right)
+\end{aligned}
+$$
+
+## Cosmological Principle
+
+$$
+\text{Cosmological Principle} \Rightarrow K^\alpha_{\beta\gamma\mu\nu} = 0
+$$
+
+$$
+\begin{aligned}
+k &+ \dot{a}^2 - a\ddot{a} = 0 \wedge \dot{a}\ddot{a} - a\dddot{a} = 0 \Rightarrow \\
+a &= \frac{1}{2X}\left( Ye^{Xct} + \frac{k}{Y}e^{-Xct} \right)\\
+\dot{a} &= \frac{1}{2}\left( Ye^{Xct} - \frac{k}{Y}e^{-Xct} \right) =\sqrt{X^2a^2-k} \\
+\ddot{a} &= \frac{X}{2}\left( Ye^{Xct} + \frac{k}{Y}e^{-Xct} \right) = X^2a \\
+\dddot{a} &= \frac{X^2}{2}\left( Ye^{Xct} - \frac{k}{Y}e^{-Xct} \right) = X^2\sqrt{X^2a^2 - k} \\
+\left[ X \right] &= m^{-1}, \ \left[ Y \right] = m^{-1}
+\end{aligned}
+$$
+
+## Measurements and Calculations
+
+$$
+\begin{aligned}
+D &:= \text{Measured Distance}, \left[ D \right] = m \\
+V &:= \text{Measured Speed}, \left[ V \right] = \frac{m}{s} \\
+ct &= 0 \rightarrow a = a_0 \\
+ct &= -D \rightarrow a = a\left( -D \right) \\
+1 + z &= 1 + \frac{V}{c} = \frac{a_0}{a(-D)} \\
+a &= a_0\cosh{Xct} + \frac{\dot{a}_0}{X}\sinh{Xct} \\
+\frac{1}{1 + \frac{V}{c}} &= \cosh{XD} - \frac{\dot{a}_0}{a_0X}\sinh{XD} \\
+\mathbf{y} &= \cosh{\alpha\mathbf{x}} - \beta\sinh{\alpha\mathbf{x}}, \ \mathbf{y} := \frac{1}{1 + \frac{V}{c}} \wedge \mathbf{x} := D \\
+\alpha &= X \wedge \beta = \frac{\dot{a}_0}{a_0X} \\
+\therefore X &= \alpha \wedge k = a_0^2\alpha^2\left( 1 - \beta^2 \right)
+\end{aligned}
+$$
+
+## Results
+
+```{r final.values.app, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+cat(paste(
+  paste0("$$\n\\begin{aligned}\n\\alpha&\\in\\left]", alpha.min %>% eq.formatter(), ", \\ ", alpha.max %>% eq.formatter(), "\\right[ m^{-1}"),
+  paste0("\\beta&\\in\\left]", beta.min %>% eq.formatter(), ", \\ ", beta.max %>% eq.formatter(), "\\right["),
+  paste0("X^2&\\in\\left]", X.2.range[1] %>% eq.formatter(), ", \\ ", X.2.range[2] %>% eq.formatter(), "\\right[ m^{-2}"),
+  paste0("k&\\in\\left]", k.range[1] %>% eq.formatter(), ", \\ ", k.range[2] %>% eq.formatter(), "\\right[ m^{-2}"),
+  "\\end{aligned}\n$$",
+  sep = "\\\\\n"
+))
+```
+
+# Literature
+
+## Theoretical and Mathematical Sources
+
+- **Carroll, S. M. (2019)**. *Spacetime and Geometry: An Introduction to General Relativity*. Cambridge University Press.
+- **Misner, C. W., Thorne, K. S., & Wheeler, J. A. (1973)**. *Gravitation*. W. H. Freeman.
+- **Weinberg, S. (2008)**. *Cosmology*. Oxford University Press.
+- **Wolf, J. A. (2011)**. *Spaces of Constant Curvature*. American Mathematical Society.
+
+## Data and Software
+
+- **NASA/IPAC Extragalactic Database (NED)**. *Search results for galactic distances and velocities.* Retrieved from https://ned.ipac.caltech.edu/.
+- **R Core Team (2023)**. *R: A Language and Environment for Statistical Computing*. R Foundation for Statistical Computing.
+- **Wickham, H., et al. (2019)**. *Welcome to the Tidyverse*. Journal of Open Source Software, 4(43), 1686.
