@@ -1,11 +1,13 @@
 ---
-title: "FLRW Metric"
+title: "Derivation of the Cosmological Scale Factor from the FLRW Metric and its Empirical Validation using Redshift Data."
 output:
   pdf_document:
     toc: true
     toc_depth: 3
     keep_tex: true
 date: "`r Sys.Date()`"
+bibliography: Literature.bib
+nocite: '@*'
 ---
 
 ```{r setup, include=FALSE}
@@ -19,6 +21,8 @@ library(ggplot2)
 # Abstract
 
 This work presents an analytical derivation of the kinematics of the universe's expansion, grounded in the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, along with its subsequent empirical validation. By imposing the space-time homogeneity and isotropy required by the Cosmological Principle, the covariant derivative of the Riemann tensor is defined and set to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$), thereby allowing for the deduction of a system of exact differential equations that determine the evolution of the scale factor $a\left( t \right)$. Based on this mathematical solution, a predictive model is formulated that correlates direct physical observables: proper distance and redshift (expressed as recession velocity). To test this model, a weighted nonlinear regression analysis is performed using a catalog of galactic distances and velocities extracted from the NED (NASA/IPAC) extragalactic database. The results of this observational fit allow for the empirical constraint of the theoretical curve's parameters, yielding statistical confidence intervals for the model's expansion constant ($X^2$) and—fundamentally—for the spatial curvature parameter ($k$), thereby bridging the rigor of differential geometry with contemporary astrophysical evidence.
+
+**Keywords**: *Cosmology, FLRW Metric, Galactic Kinematics, General Relativity*
 
 # Introduction
 
@@ -316,6 +320,12 @@ The fundamental points derived from this work are:
 
 As future work, it is suggested that data catalogs featuring higher redshifts—such as those derived from Type Ia supernovae or the Cosmic Microwave Background—be incorporated to evaluate the stability of parameters $\alpha$ and $\beta$ in regimes involving greater distances. In conclusion, this study reaffirms that the Cosmological Principle, formalized through the "Cosmological Tensor," constitutes a powerful tool for unraveling the geometric evolution of the universe from a purely kinematic perspective.
 
+# Data and Code Availability
+
+The raw empirical data analyzed in this study—specifically the extragalactic distances and recession velocities—were extracted from the NASA/IPAC Extragalactic Database (NED), operated by the Jet Propulsion Laboratory, California Institute of Technology, under contract with NASA. 
+
+To ensure the transparency and reproducibility of our results, all computational routines, data processing scripts, and the cleaned data structures used for the nonlinear least squares (NLS) regression were developed in the R programming language. The complete source code, the R Markdown manuscript file, and the specific data subsets generated during this study are fully accessible in the project's public GitHub repository: https://github.com/LUCHER4321/flrw-metric.
+
 # Appendices
 
 ## Units and Definitions
@@ -468,8 +478,8 @@ ct &= -D \rightarrow a = a\left( -D \right) \\
 1 + z &= 1 + \frac{V}{c} = \frac{a_0}{a(-D)} \\
 a &= a_0\cosh{Xct} + \frac{\dot{a}_0}{X}\sinh{Xct} \\
 \frac{1}{1 + \frac{V}{c}} &= \cosh{XD} - \frac{\dot{a}_0}{a_0X}\sinh{XD} \\
-\mathbf{y} &= \cosh{\alpha\mathbf{x}} - \beta\sinh{\alpha\mathbf{x}}, \ \mathbf{y} := \frac{1}{1 + \frac{V}{c}} \wedge \mathbf{x} := D \\
-\alpha &= X \wedge \beta = \frac{\dot{a}_0}{a_0X} \\
+\mathbf{y} &= \cosh{\alpha\mathbf{x}} - \beta\sinh{\alpha\mathbf{x}} \\
+\mathbf{y} &:= \frac{1}{1 + \frac{V}{c}} \wedge \mathbf{x} := D \wedge \alpha := X \wedge \beta := \frac{\dot{a}_0}{a_0X} \\
 \therefore X &= \alpha \wedge k = a_0^2\alpha^2\left( 1 - \beta^2 \right)
 \end{aligned}
 $$
@@ -487,17 +497,5 @@ cat(paste(
 ))
 ```
 
+
 # Literature
-
-## Theoretical and Mathematical Sources
-
-- **Carroll, S. M. (2019)**. *Spacetime and Geometry: An Introduction to General Relativity*. Cambridge University Press.
-- **Misner, C. W., Thorne, K. S., & Wheeler, J. A. (1973)**. *Gravitation*. W. H. Freeman.
-- **Weinberg, S. (2008)**. *Cosmology*. Oxford University Press.
-- **Wolf, J. A. (2011)**. *Spaces of Constant Curvature*. American Mathematical Society.
-
-## Data and Software
-
-- **NASA/IPAC Extragalactic Database (NED)**. *Search results for galactic distances and velocities.* Retrieved from https://ned.ipac.caltech.edu/.
-- **R Core Team (2023)**. *R: A Language and Environment for Statistical Computing*. R Foundation for Statistical Computing.
-- **Wickham, H., et al. (2019)**. *Welcome to the Tidyverse*. Journal of Open Source Software, 4(43), 1686.
