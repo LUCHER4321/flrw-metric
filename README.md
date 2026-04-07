@@ -27,7 +27,7 @@ To compile the `.Rmd` file and reproduce the results, you will need the followin
 * **LaTeX** distribution (e.g., TeX Live, MiKTeX, or TinyTeX) for rendering the PDF.
 
 **Required R Packages:**
-```R
+```r
 install.packages(c("dplyr", "rvest", "lubridate", "ggplot2", "knitr", "rmarkdown"))
 ```
 
