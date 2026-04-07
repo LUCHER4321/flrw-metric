@@ -5,9 +5,7 @@ output:
     toc: true
     toc_depth: 3
     keep_tex: true
-date: "`r Sys.Date()`"
 bibliography: Literature.bib
-nocite: '@*'
 ---
 
 ```{r setup, include=FALSE}
@@ -20,25 +18,25 @@ library(ggplot2)
 
 # Abstract
 
-This work presents an analytical derivation of the kinematics of the universe's expansion, grounded in the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, along with its subsequent empirical validation. By imposing the space-time homogeneity and isotropy required by the Cosmological Principle, the covariant derivative of the Riemann tensor is defined and set to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$), thereby allowing for the deduction of a system of exact differential equations that determine the evolution of the scale factor $a\left( t \right)$. Based on this mathematical solution, a predictive model is formulated that correlates direct physical observables: proper distance and redshift (expressed as recession velocity). To test this model, a weighted nonlinear regression analysis is performed using a catalog of galactic distances and velocities extracted from the NED (NASA/IPAC) extragalactic database. The results of this observational fit allow for the empirical constraint of the theoretical curve's parameters, yielding statistical confidence intervals for the model's expansion constant ($X^2$) and—fundamentally—for the spatial curvature parameter ($k$), thereby bridging the rigor of differential geometry with contemporary astrophysical evidence.
+This work presents an analytical derivation of the kinematics of the universe's expansion, grounded in the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, along with its subsequent empirical validation [@misner1973gravitation; @weinberg2008cosmology]. By imposing the space-time homogeneity and isotropy required by the Cosmological Principle [@carroll2019spacetime], the covariant derivative of the Riemann tensor is defined and set to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$) [@wolf2011spaces], thereby allowing for the deduction of a system of exact differential equations that determine the evolution of the scale factor $a\left( t \right)$. Based on this mathematical solution, a predictive model is formulated that correlates direct physical observables: proper distance and redshift (expressed as recession velocity). To test this model, a weighted nonlinear regression analysis is performed using a catalog of galactic distances and velocities extracted from the NED (NASA/IPAC) extragalactic database [@ned_database]. The results of this observational fit allow for the empirical constraint of the theoretical curve's parameters, yielding statistical confidence intervals for the model's expansion constant ($X^2$) and—fundamentally—for the spatial curvature parameter ($k$), thereby bridging the rigor of differential geometry with contemporary astrophysical evidence.
 
 **Keywords**: *Cosmology, FLRW Metric, Galactic Kinematics, General Relativity*
 
 # Introduction
 
-General Relativity has provided the fundamental framework for understanding the dynamics of the universe on large scales. At the heart of modern cosmology lies the Friedmann-Lemaître-Robertson-Walker (FLRW) metric—the exact solution to Einstein's field equations that describes an expanding, spatially homogeneous, and isotropic universe. This geometric symmetry constitutes the mathematical manifestation of the Cosmological Principle, which postulates that, on sufficiently large scales, the universe possesses no privileged positions or directions.
+General Relativity has provided the fundamental framework for understanding the dynamics of the universe on large scales [@misner1973gravitation]. At the heart of modern cosmology lies the Friedmann-Lemaître-Robertson-Walker (FLRW) metric—the exact solution to Einstein's field equations that describes an expanding, spatially homogeneous, and isotropic universe [@weinberg2008cosmology]. This geometric symmetry constitutes the mathematical manifestation of the Cosmological Principle, which postulates that, on sufficiently large scales, the universe possesses no privileged positions or directions [@carroll2019spacetime].
 
-Traditionally, the temporal evolution of the universe is addressed by solving the Friedmann equations, a process that requires making an *a priori* assumption regarding the equation of state for the universe's matter and energy content. However, the Cosmological Principle itself imposes such stringent geometric constraints that it becomes possible to extract profound information regarding the kinematics of the universe by directly studying the structure of the spacetime manifold. In this work, we formalize this geometric constraint by defining the "Cosmological Tensor" as the covariant derivative of the Riemann tensor ($K^\alpha_{\beta\gamma\mu\nu} := R^\alpha_{\beta\gamma\mu;\nu}$). By requiring that this tensor vanish identically—as a consequence of maximal homogeneity and isotropy—we demonstrate that it is possible to derive a system of exact differential equations for the cosmic scale factor, $a\left( t \right)$.
+Traditionally, the temporal evolution of the universe is addressed by solving the Friedmann equations, a process that requires making an a priori assumption regarding the equation of state for the universe's matter and energy content. However, the Cosmological Principle itself imposes such stringent geometric constraints that it becomes possible to extract profound information regarding the kinematics of the universe by directly studying the structure of the spacetime manifold. In this work, we formalize this geometric constraint by defining the "Cosmological Tensor" as the covariant derivative of the Riemann tensor ($K^\alpha_{\beta\gamma\mu\nu} := R^\alpha_{\beta\gamma\mu;\nu}$). By requiring that this tensor vanish identically—as a consequence of maximal homogeneity and isotropy [@wolf2011spaces]—we demonstrate that it is possible to derive a system of exact differential equations for the cosmic scale factor, $a\left( t \right)$.
 
 Notwithstanding the elegance of analytical derivations in differential geometry, a cosmological model acquires physical validity only when its predictions are tested against empirical evidence. Theoretical solutions for $a\left( t \right)$ and its derivatives must be translated into the language of observational astronomy—specifically, by establishing a relationship between the observed proper distance ($D$) and the galactic recession velocity, as derived from redshift ($z$).
 
-The primary objective of this article is twofold. First, to present a rigorous and self-consistent analytical derivation of the kinematics of the universe's expansion, commencing from the pure FLRW metric and culminating in an exact solution for the scale factor. Secondly, we will subject this mathematical model to rigorous empirical validation. Utilizing an updated catalog of galactic distance and velocity measurements extracted from the NED (NASA/IPAC Extragalactic Database), we will apply weighted nonlinear regression techniques to fit our theoretical curve. This analysis will enable us to empirically constrain the model's fundamental parameters, yielding direct confidence intervals for the theoretical expansion constant and—crucially—for the spatial curvature parameter $k$. Thus, the present work seeks to establish a transparent methodological bridge between the abstract topology of spacetime and contemporary observational cosmology.
+The primary objective of this article is twofold. First, to present a rigorous and self-consistent analytical derivation of the kinematics of the universe's expansion, commencing from the pure FLRW metric and culminating in an exact solution for the scale factor. Secondly, we will subject this mathematical model to rigorous empirical validation. Utilizing an updated catalog of galactic distance and velocity measurements extracted from the NED (NASA/IPAC Extragalactic Database) [@ned_database], we will apply weighted nonlinear regression techniques to fit our theoretical curve. This analysis will enable us to empirically constrain the model's fundamental parameters, yielding direct confidence intervals for the theoretical expansion constant and—crucially—for the spatial curvature parameter $k$. Thus, the present work seeks to establish a transparent methodological bridge between the abstract topology of spacetime and contemporary observational cosmology.
 
 # Theoretical Framework
 
 ## The FLRW Metric
 
-We consider a four-dimensional manifold characterized by a Friedmann-Lemaître-Robertson-Walker (FLRW) metric. In comoving coordinates $\left( x^0, r, \theta, \phi \right)$, where $x^0 := ct$, the line element ${ds}^2$ is defined as:
+We consider a four-dimensional manifold characterized by a Friedmann-Lemaître-Robertson-Walker (FLRW) metric [@weinberg2008cosmology; @misner1973gravitation]. In comoving coordinates $\left( x^0, r, \theta, \phi \right)$, where $x^0 := ct$, the line element ${ds}^2$ is defined as:
 
 $$
 {ds}^2= -c^2{dt}^2 + a^2 \left( \frac{{dr}^2}{1 - kr^2} + r^2 \left( {d\theta}^2 + \sin^2\theta{d\phi}^2 \right) \right)
@@ -55,7 +53,7 @@ $$
 
 ## Levi-Civita Connection and Curvature Tensors
 
-Based on the defined metric, the Christoffel symbols of the second kind $\Gamma^\alpha_{\beta\gamma}$ are derived using the standard relation $\Gamma^\alpha_{\beta\gamma}=\frac{1}{2}g^{\alpha\sigma}\left( g_{\beta\sigma,\gamma} + g_{\gamma\sigma,\beta} - g_{\beta\gamma,\sigma} \right)$. The temporal and spatial components relevant to the dynamics are:
+Based on the defined metric, the Christoffel symbols of the second kind $\Gamma^\alpha_{\beta\gamma}$ are derived using the standard relation $\Gamma^\alpha_{\beta\gamma}=\frac{1}{2}g^{\alpha\sigma}\left( g_{\beta\sigma,\gamma} + g_{\gamma\sigma,\beta} - g_{\beta\gamma,\sigma} \right)$[@carroll2019spacetime]. The temporal and spatial components relevant to the dynamics are:
 
 $$
 \Gamma^0_{rr} = \frac{a\dot{a}}{1 - kr^2}, \
@@ -86,7 +84,7 @@ $$
 K^\alpha_{\beta\gamma\mu\nu} := R^\alpha_{\beta\gamma\mu;\nu} = 0
 $$
 
-This nullity condition ensures that variations in the gravitational field strictly respect homogeneity and isotropy. Upon evaluating this constraint on the **spatial dimensions** of the manifold, the tensor system reduces to a fundamental differential equation governing the behavior of the scale factor:
+This nullity condition ensures that variations in the gravitational field strictly respect homogeneity and isotropy [@wolf2011spaces]. Upon evaluating this constraint on the **spatial dimensions** of the manifold, the tensor system reduces to a fundamental differential equation governing the behavior of the scale factor:
 
 $$
 k + \dot{a}^2 - a\ddot{a} = 0
@@ -98,7 +96,7 @@ $$
 a = \frac{1}{2X}\left( Ye^{Xct} + \frac{k}{Y}e^{-Xct} \right)
 $$
 
-where $X$ and $Y$ emerge as constants of integration that characterize the dynamics of the expansion, being directly linked to the spatial curvature $k$.
+where $X$ and $Y$ emerge as integration constants that characterize the dynamics of the expansion, being directly linked to the spatial curvature $k$.
 
 Remarkably, a mathematically unexpected and elegant consequence arises from this development. Upon calculating the higher-order derivatives of our exact solution for $a\left( t \right)$ and evaluating them within the **temporal dimensions** of the cosmological tensor, it is discovered that they naturally and automatically satisfy the identity:
 
@@ -112,9 +110,9 @@ This finding demonstrates that the temporal evolution of the expansion need not 
 
 ## Data Selection and Source
 
-To validate the derived kinematic model, observational data from the extragalactic database **NED (NASA/IPAC Extragalactic Database)** were utilized. The selected sample comprises a population of galaxies with independent measurements of proper distance ($D$) and recession velocity ($V$), the latter derived from spectroscopic redshift ($z$).
+To validate the derived kinematic model, observational data from the extragalactic database **NED (NASA/IPAC Extragalactic Database)** [@ned_database] were utilized. The selected sample comprises a population of galaxies with independent measurements of proper distance ($D$) and recession velocity ($V$), the latter derived from spectroscopic redshift ($z$).
 
-Data processing was performed within the **R** statistical environment, utilizing the `tidyverse` ecosystem of libraries for data cleaning and structuring. Records containing missing values (NA) were filtered out to ensure the statistical integrity of the sample.
+Data processing was performed within the **R** statistical environment [@rcore2023], utilizing the `tidyverse` ecosystem of libraries [@wickham2019tidyverse] for data cleaning and structuring. Records containing missing values (NA) were filtered out to ensure the statistical integrity of the sample.
 
 ## Normalization of Units and Regression Variables
 
@@ -148,9 +146,9 @@ Where $a_0$ represents the scale factor at the present epoch. To ensure the robu
 
 ## Model Fitting and Visualization
 
-The nonlinear regression model based on hyperbolic functions was successfully fitted to the observational data from the NED database. Figure 1 illustrates the relationship between the dependent variable $\mathbf{y}$ (the inverse of the redshift factor) and the proper distance $D$. It is observed that the theoretical curve of the proposed FLRW model precisely follows the trend of the data, capturing the nature of the expansion across the sample volume.
+The nonlinear regression model based on hyperbolic functions was successfully fitted to the observational data from the NED database [@ned_database]. Figure 1 illustrates the relationship between the dependent variable $\mathbf{y}$ (the inverse of the redshift factor) and the proper distance $D$. It is observed that the theoretical curve of the proposed FLRW model precisely follows the trend of the data, capturing the nature of the expansion across the sample volume.
 
-```{r s.vs.r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r s.vs.r, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Fit of the hyperbolic model to the galactic distance-velocity data. The points represent the observations, and the solid line represents the nonlinear least-squares fit."}
 pages <- 6
 get.url <- function(n) paste0("https://ned.ipac.caltech.edu/level5/NED05D/ned05D_", n, ".html")
 measures.list <- list()
@@ -232,9 +230,7 @@ measures.df.converted.units.estimated.values %>%
   )
 ```
 
-**Figure 1**. Fit of the hyperbolic model to the galactic distance-velocity data. The points represent the observations, and the solid line represents the nonlinear least-squares fit.
-
-```{r s.vs.r.1, echo=FALSE, message=FALSE, warning=FALSE}
+```{r s.vs.r.1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Projection of the fitted model onto the physical distance-velocity space. The points represent the observations, and the solid line represents the derived theoretical recession velocity."}
 reg.y.to.V <- function(r.y) {
   light.speed * (1 / r.y - 1)
 }
@@ -252,8 +248,6 @@ measures.df.converted.units.estimated.values %>%
     colour = "Distance [m]"
   )
 ```
-
-**Figure 2**. Projection of the fitted model onto the physical distance-velocity space. The points represent the observations, and the solid line represents the derived theoretical recession velocity.
 
 ## Estimated Parameters
 
@@ -293,38 +287,38 @@ cat(paste0(
   "The most significant result of this analysis is the constraint placed on the curvature parameter $k$. Based on the processed data from the NED sample, the obtained interval for $k$ lies between $",
   k.range[1] %>% eq.formatter(), "$ and $", k.range[2] %>% eq.formatter(),
   "$ $m^{-2}$. As this range consists exclusively of values greater than zero, the results of this fit favor a ", geometry.type,
-  " curvature. Nevertheless, it is imperative to highlight that the obtained magnitude is extremely small (on the order of $10^{-52}$), which is consistent with contemporary cosmological observations that place the universe in a state of near-absolute flatness."
+  " curvature. Nevertheless, it is imperative to highlight that the obtained magnitude is extremely small (on the order of $10^{-52}$), which is consistent with contemporary cosmological observations that place the universe in a state of near-absolute flatness [@weinberg2008cosmology]."
 ))
 ```
 
 ## Consistency of the Cosmological Tensor Hypothesis
 
-The premise that the covariant derivative of the Riemann tensor must vanish ($K^\alpha_{\beta\gamma\mu\nu} = 0$) yielded a solution for the scale factor $a\left( t \right)$ that fits the observed expansion law remarkably well. This suggests that the geometric constraints imposed by maximal homogeneity and isotropy are sufficient to describe galactic kinematics without the need to initially invoke specific density parameters, thereby validating the model's purely geometric approach.
+The premise that the covariant derivative of the Riemann tensor must vanish ($K^\alpha_{\beta\gamma\mu\nu} = 0$) yielded a solution for the scale factor $a\left( t \right)$ that fits the observed expansion law remarkably well. This suggests that the geometric constraints imposed by maximal homogeneity and isotropy [@wolf2011spaces] are sufficient to describe galactic kinematics without the need to initially invoke specific density parameters, thereby validating the model's purely geometric approach.
 
 ## Limitations and Sources of Error
 
 Despite the good statistical fit, there are inherent limitations:
 
-- **Selection Bias**: The data from the NED database are derived from various measurement techniques (Cepheids, Type Ia Supernovae, etc.), which introduces heteroscedasticity that we attempt to mitigate by using weights ($\text{weights} = D$) in the regression.
+- **Selection Bias**: The data from the NED database [@ned_database] are derived from various measurement techniques (Cepheids, Type Ia Supernovae, etc.) [@weinberg2008cosmology], which introduces heteroscedasticity that we attempt to mitigate by using weights ($\text{weights} = D$) in the regression.
 - **Local Effects**: At short distances, the peculiar velocities of galaxies can cause data points to deviate from the ideal Hubble flow, affecting the precision of the parameters $\alpha$ and $\beta$.
 
 # Conclusions
 
-The present investigation has established a direct link between the geometric constraints of General Relativity and the astrophysical observation of galaxies. Through an analysis of the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, it has been demonstrated that imposing a condition of maximal homogeneity—by setting the covariant derivative of the Riemann tensor to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$)—leads to a self-consistent kinematic description of the scale factor $a\left( t \right)$.
+The present investigation has established a direct link between the geometric constraints of General Relativity and the astrophysical observation of galaxies [@misner1973gravitation]. Through an analysis of the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, it has been demonstrated that imposing a condition of maximal homogeneity—by setting the covariant derivative of the Riemann tensor to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$) [@wolf2011spaces]—leads to a self-consistent kinematic description of the scale factor $a\left( t \right)$.
 
 The fundamental points derived from this work are:
 
-- Validity of the Geometric Approach: The derivation of a system of differential equations for $a\left( t \right)$ based on the structure of the Riemann tensor enabled the formulation of a predictive model linking redshift to proper distance. The success of the nonlinear fit suggests that the dynamics of expansion may be interpreted as a direct consequence of the symmetry properties of spacetime.
-- Empirical Results and Curvature: The fit performed using data from the NED database yielded expansion ($X^2$) and curvature ($k$) parameters with high statistical precision. Specifically, the value obtained for $k$—on the order of $10^{-52}$—while numerically positive, is consistent with a universe of nearly zero curvature, thereby reinforcing the hypothesis of spatial flatness observed in other cosmological studies.
-- Model Robustness: The use of nonlinear regression based on hyperbolic functions ($\cosh$ and $\sinh$) provided a robust framework for capturing the trend of observational data at extragalactic scales.
+- **Validity of the Geometric Approach**: The derivation of a system of differential equations for $a\left( t \right)$ based on the structure of the Riemann tensor enabled the formulation of a predictive model linking redshift to proper distance. The success of the nonlinear fit suggests that the dynamics of expansion may be interpreted as a direct consequence of the symmetry properties of spacetime [@carroll2019spacetime].
+- **Empirical Results and Curvature**: The fit performed using data from the NED database [@ned_database] yielded expansion ($X^2$) and curvature ($k$) parameters with high statistical precision. Specifically, the value obtained for $k$—on the order of $10^{-52}$—while numerically positive, is consistent with a universe of nearly zero curvature, thereby reinforcing the hypothesis of spatial flatness observed in other cosmological studies [@weinberg2008cosmology].
+- **Model Robustness**: The use of nonlinear regression based on hyperbolic functions ($\cosh$ and $\sinh$) provided a robust framework for capturing the trend of observational data at extragalactic scales.
 
-As future work, it is suggested that data catalogs featuring higher redshifts—such as those derived from Type Ia supernovae or the Cosmic Microwave Background—be incorporated to evaluate the stability of parameters $\alpha$ and $\beta$ in regimes involving greater distances. In conclusion, this study reaffirms that the Cosmological Principle, formalized through the "Cosmological Tensor," constitutes a powerful tool for unraveling the geometric evolution of the universe from a purely kinematic perspective.
+As future work, it is suggested that data catalogs featuring higher redshifts—such as those derived from Type Ia supernovae or the Cosmic Microwave Background [@weinberg2008cosmology]—be incorporated to evaluate the stability of parameters $\alpha$ and $\beta$ in regimes involving greater distances. In conclusion, this study reaffirms that the Cosmological Principle [@carroll2019spacetime], formalized through the "Cosmological Tensor," constitutes a powerful tool for unraveling the geometric evolution of the universe from a purely kinematic perspective.
 
 # Data and Code Availability
 
-The raw empirical data analyzed in this study—specifically the extragalactic distances and recession velocities—were extracted from the NASA/IPAC Extragalactic Database (NED), operated by the Jet Propulsion Laboratory, California Institute of Technology, under contract with NASA. 
+The raw empirical data analyzed in this study—specifically the extragalactic distances and recession velocities—were extracted from the NASA/IPAC Extragalactic Database (NED) [@ned_database], operated by the Jet Propulsion Laboratory, California Institute of Technology, under contract with NASA. 
 
-To ensure the transparency and reproducibility of our results, all computational routines, data processing scripts, and the cleaned data structures used for the nonlinear least squares (NLS) regression were developed in the R programming language. The complete source code, the R Markdown manuscript file, and the specific data subsets generated during this study are fully accessible in the project's public GitHub repository: https://github.com/LUCHER4321/flrw-metric.
+To ensure the transparency and reproducibility of our results, all computational routines, data processing scripts, and the cleaned data structures used for the nonlinear least squares (NLS) regression were developed in the R programming language [@rcore2023]. The complete source code, the R Markdown manuscript file, and the specific data subsets generated during this study are fully accessible in the project's public GitHub repository: https://github.com/LUCHER4321/flrw-metric.
 
 # Appendices
 
@@ -488,14 +482,13 @@ $$
 
 ```{r final.values.app, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 cat(paste(
-  paste0("$$\n\\begin{aligned}\n\\alpha&\\in\\left]", alpha.min %>% eq.formatter(), ", \\ ", alpha.max %>% eq.formatter(), "\\right[ m^{-1}"),
-  paste0("\\beta&\\in\\left]", beta.min %>% eq.formatter(), ", \\ ", beta.max %>% eq.formatter(), "\\right["),
-  paste0("X^2&\\in\\left]", X.2.range[1] %>% eq.formatter(), ", \\ ", X.2.range[2] %>% eq.formatter(), "\\right[ m^{-2}"),
-  paste0("k&\\in\\left]", k.range[1] %>% eq.formatter(), ", \\ ", k.range[2] %>% eq.formatter(), "\\right[ m^{-2}"),
+  paste0("$$\n\\begin{aligned}\n\\alpha&\\in\\left]", alpha.min %>% eq.formatter(digits = 4), ", \\ ", alpha.max %>% eq.formatter(digits = 4), "\\right[ m^{-1}"),
+  paste0("\\beta&\\in\\left]", beta.min %>% eq.formatter(digits = 4), ", \\ ", beta.max %>% eq.formatter(digits = 4), "\\right["),
+  paste0("X^2&\\in\\left]", X.2.range[1] %>% eq.formatter(digits = 4), ", \\ ", X.2.range[2] %>% eq.formatter(digits = 4), "\\right[ m^{-2}"),
+  paste0("k&\\in\\left]", k.range[1] %>% eq.formatter(digits = 4), ", \\ ", k.range[2] %>% eq.formatter(digits = 4), "\\right[ m^{-2}"),
   "\\end{aligned}\n$$",
   sep = "\\\\\n"
 ))
 ```
-
 
 # Literature
