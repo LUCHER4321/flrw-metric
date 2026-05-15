@@ -5,6 +5,9 @@ output:
     toc: true
     toc_depth: 3
     keep_tex: true
+header-includes:
+  - \usepackage{float}
+  - \usepackage{placeins}
 bibliography: Literature.bib
 ---
 
@@ -18,7 +21,7 @@ library(ggplot2)
 
 # Abstract
 
-This work presents an analytical derivation of the kinematics of the universe's expansion, grounded in the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, along with its subsequent empirical validation [@misner1973gravitation; @weinberg2008cosmology]. By imposing the space-time homogeneity and isotropy required by the Cosmological Principle [@carroll2019spacetime], the covariant derivative of the Riemann tensor is defined and set to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$) [@wolf2011spaces], thereby allowing for the deduction of a system of exact differential equations that determine the evolution of the scale factor $a\left( t \right)$. Based on this mathematical solution, a predictive model is formulated that correlates direct physical observables: proper distance and redshift (expressed as recession velocity). To test this model, a weighted nonlinear regression analysis is performed using a catalog of galactic distances and velocities extracted from the NED (NASA/IPAC) extragalactic database [@ned_database]. The results of this observational fit allow for the empirical constraint of the theoretical curve's parameters, yielding statistical confidence intervals for the model's expansion constant ($X^2$) and—fundamentally—for the spatial curvature parameter ($k$), thereby bridging the rigor of differential geometry with contemporary astrophysical evidence.
+This work presents an analytical derivation of the kinematics and thermodynamics of the universe's expansion, grounded in the Friedmann-Lemaître-Robertson-Walker (FLRW) metric and the Einstein Field Equations [@misner1973gravitation; @weinberg2008cosmology]. By imposing the space-time homogeneity and isotropy required by the Cosmological Principle [@carroll2019spacetime], the covariant derivative of the Riemann tensor is defined and set to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$) [@wolf2011spaces], yielding a geometrically constrained spacetime where the Einstein tensor becomes strictly proportional to the metric ($G_{\alpha\beta} = 3X^2g_{\alpha\beta}$). Based on this exact mathematical solution, a predictive model is formulated that correlates direct physical observables: proper distance and redshift (expressed as recession velocity). To test this model, a weighted nonlinear regression analysis is performed using a catalog of galactic distances and velocities extracted from the NED (NASA/IPAC) extragalactic database [@ned_database]. The results of this observational fit allow for the empirical constraint of the expansion constant ($X^2$) and the spatial curvature parameter ($k$). Furthermore, thermodynamic evaluation of the field equations reveals an equation of state $P = -\rho c^2$, mathematically restricting the cosmos to a maximally symmetric variety. This demonstrates that the modeled universe is devoid of ordinary matter and radiation, establishing a fundamental degeneracy where energy density ($\rho$) and the bare cosmological constant ($\Lambda$) unify into a single effective magnitude ($\Lambda = 3X^2 - \frac{8 \pi G}{c^2}\rho$) that entirely governs the vacuum energy driving the expansion.
 
 **Keywords**: *Cosmology, FLRW Metric, Galactic Kinematics, General Relativity*
 
@@ -106,6 +109,40 @@ $$
 
 This finding demonstrates that the temporal evolution of the expansion need not be postulated independently, but rather emerges as an intrinsic and inevitable consequence of requiring maximal spatial symmetry within the manifold. This self-consistent solution constitutes the basis of the kinematic model, which will be empirically tested against observational data in the subsequent sections.
 
+## Thermodynamic Implications and the Cosmological Constant
+
+To connect our purely kinematic derivation with the physical content of the universe, we introduce the Einstein Field Equations with a cosmological constant $\Lambda$. By substituting our previous geometric finding for the Einstein tensor ($G_{\alpha\beta} = -3X^2g_{\alpha\beta}$) and assuming a perfect fluid model for the energy-momentum tensor $T_{\alpha\beta}$, we establish the following fundamental equality:
+
+$$
+G_{\alpha\beta} + \Lambda g_{\alpha\beta} = \frac{8 \pi G}{c^4} T_{\alpha\beta}
+$$
+
+$$
+\left( -3X^2 + \Lambda \right)g_{\alpha\beta} = \frac{8 \pi G}{c^4} \left( \left( \rho + \frac{P}{c^2} \right) u_\alpha u_\beta + P g_{\alpha\beta} \right)
+$$
+
+Considering a comoving observer where the macroscopic fluid is at rest, the four-velocity is strictly aligned with the temporal basis:
+
+$$
+u^\alpha e_\alpha = c e_0 \Rightarrow u_\alpha e^\alpha = -ce^0
+$$
+
+By applying this velocity condition and decoupling the temporal and spatial components of the tensor equality, the system allows us to explicitly solve for both the energy density $\rho$ and the pressure $P$ of the cosmological fluid:
+
+$$
+\rho = \frac{c^2}{8 \pi G} \left( 3X^2 - \Lambda \right)
+$$
+
+$$
+P = \frac{c^4}{8 \pi G} \left( -3X^2 + \Lambda \right) = -\rho c^2
+$$
+
+The rigorous application of the Cosmological Tensor implicitly forces the fluid to obey the equation of state $P = -\rho c^2$, which corresponds precisely to the thermodynamic behavior of vacuum energy (dark energy). Finally, by rearranging the density equation, we obtain a direct analytical expression for the Cosmological Constant. This equation elegantly bridges the geometric expansion parameter $X$ (which we will empirically determine) with the physical density $\rho$:
+
+$$
+\Lambda = 3X^2 - \frac{8 \pi G}{c^2}\rho
+$$
+
 # Observational Methodology
 
 ## Data Selection and Source
@@ -142,13 +179,31 @@ Once the optimal estimators for $\alpha$ and $\beta$ were obtained, the physical
 
 Where $a_0$ represents the scale factor at the present epoch. To ensure the robustness of the results, 95% confidence intervals were calculated for each parameter using the fit's variance-covariance matrix, thereby enabling a statistical interpretation of the universe's curvature state ($k > 0$, $k < 0$, or $k \approx 0$).
 
+## Empirical Estimation of the Cosmological Constant and Pressure
+
+While the regression analysis provides a direct empirical value for the expansion parameter ($X = \alpha$), the purely geometric nature of the maximum symmetry condition requires an independent observational constraint to break the degeneracy between the density and the vacuum energy. To achieve this, we introduce the currently measured density of the universe, denoted simply as $\rho$. 
+
+By adopting $\rho$ as a known observational input, we can rearrange the previously derived thermodynamic relationships to isolate and calculate the Cosmological Constant:
+
+$$
+\Lambda = 3X^2 - \frac{8 \pi G}{c^2}\rho
+$$
+
+Once $\Lambda$ is determined using the empirical values of $X$ and $\rho$, the global state of the cosmological fluid can be completely resolved. The pressure $P$ driven by this configuration is subsequently evaluated using the exact geometric constraint of the model:
+
+$$
+P = \frac{c^4}{8 \pi G} \left( -3X^2 + \Lambda \right) = -\rho c^2
+$$
+
+This methodological step not only computes the magnitude of $\Lambda$, but empirically verifies that the pressure required to sustain the observed expansion kinematics exactly mirrors the equation of state of dark energy.
+
 # Results
 
 ## Model Fitting and Visualization
 
 The nonlinear regression model based on hyperbolic functions was successfully fitted to the observational data from the NED database [@ned_database]. Figure 1 illustrates the relationship between the dependent variable $\mathbf{y}$ (the inverse of the redshift factor) and the proper distance $D$. It is observed that the theoretical curve of the proposed FLRW model precisely follows the trend of the data, capturing the nature of the expansion across the sample volume.
 
-```{r s.vs.r, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Fit of the hyperbolic model to the galactic distance-velocity data. The points represent the observations, and the solid line represents the nonlinear least-squares fit."}
+```{r s.vs.r, echo=FALSE, message=FALSE, warning=FALSE}
 pages <- 6
 get.url <- function(n) paste0("https://ned.ipac.caltech.edu/level5/NED05D/ned05D_", n, ".html")
 measures.list <- list()
@@ -176,10 +231,10 @@ measures.df$`Vgsr (RC3)` <- measures.df$`Vgsr (RC3)` %>% as.numeric()
 
 #measures.df %>% summary()
 
-au <- 149597870700 # meters
-pc <- au / tan(1 / 3600 * pi / 180) # meters
+au <- 149597870700 # m
+pc <- au / tan(1 / 3600 * pi / 180) # m
 a.0 <- 1 # units
-light.speed <- 299792456 # meters per second
+light.speed <- 299792458 # m/s
 measures.df.converted.units <- measures.df %>% mutate(
   D = D * 10^6 * pc,
   `Vgsr (RC3)` = `Vgsr (RC3)` * 10^3,
@@ -216,6 +271,17 @@ measures.df.converted.units.estimated.values <- measures.df.converted.units %>% 
   reg.y.est = cosh(alpha * reg.x) - beta * sinh(alpha * reg.x)
 )
 
+grav.const <- 6.67430 * 10^-11 # m^3/(kg * s^2)
+H0.0 <- 67.4 + c(-1, 1) * 0.5 # km/s/Mpc
+H0 <- H0.0 * 1000 / (10^6 * pc) # s^-1
+matter.density <- 3 * H0^2 / (8 * pi * grav.const) # kg / m^3
+
+press <- -matter.density %>% rev() * light.speed^2
+cosm.const <- 3 * X.2.range - 8 * pi * grav.const / light.speed^2 * matter.density %>% rev()
+```
+
+
+```{r s.vs.r.1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Fit of the hyperbolic model to the galactic distance-velocity data. The points represent the observations, and the solid line represents the nonlinear least-squares fit."}
 measures.df.converted.units.estimated.values %>%
   ggplot() +
   geom_point(aes(x = reg.x, y = reg.y, colour = D)) +
@@ -230,7 +296,7 @@ measures.df.converted.units.estimated.values %>%
   )
 ```
 
-```{r s.vs.r.1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Projection of the fitted model onto the physical distance-velocity space. The points represent the observations, and the solid line represents the derived theoretical recession velocity."}
+```{r s.vs.r.2, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Projection of the fitted model onto the physical distance-velocity space. The points represent the observations and the solid line represents the derived theoretical recession velocity.", fig.pos="H"}
 reg.y.to.V <- function(r.y) {
   light.speed * (1 / r.y - 1)
 }
@@ -249,11 +315,12 @@ measures.df.converted.units.estimated.values %>%
   )
 ```
 
-## Estimated Parameters
+\FloatBarrier
+## Thermodynamic State Evaluation
 
-Upon the convergence of the NLS algorithm, the following 95% confidence intervals were obtained for the fundamental parameters of the model:
+With the kinematic parameters successfully constrained by the galactic distance-velocity dataset, the thermodynamic state of the universe is evaluated. To compute the physical values of the cosmological fluid pressure ($P$) and the Cosmological Constant ($\Lambda$), standard physical constants were introduced into our derived geometric relationships.
 
-```{r final.values, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+```{r values, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 eq.formatter <- function(x, digits = 2){
   num <- x %>% as.character() %>% strsplit("e") %>% unlist()
   if(num %>% length() == 0) return(NA)
@@ -261,12 +328,35 @@ eq.formatter <- function(x, digits = 2){
   return(paste0(num[1] %>% as.numeric() %>% round(digits = digits), "\\times 10^{", num[2], "}"))
 }
 
+err.margin <- function(x){
+  (x %>% max() - x %>% min()) / 2 / x %>% range() %>% mean()
+}
+
+cat(
+  paste(
+    "The speed of light in a vacuum was defined as $c =",
+    light.speed, "\\frac{m}{s}$, and the Newtonian constant of gravitation as $G =",
+    grav.const %>% eq.formatter(digits = 5), "\\frac{m^3}{kg \\times s^2}$ [@workman2022review]. For the observational matter density, we adopted a present-day baseline value of $\\rho_0 = ",
+    matter.density %>% mean() %>% eq.formatter(), "\\frac{kg}{m^3}$, allowing for a measurement uncertainty margin of $\\pm",
+    (matter.density %>% err.margin() * 100) %>% round(2), "\\%$ [@planck2020results] to propagate robust confidence intervals. Substituting these empirical physical inputs into our strictly mathematical framework breaks the geometric degeneracy, yielding the complete set of parameters that govern the expansion."
+  )
+)
+```
+
+## Estimated Parameters
+
+Upon the convergence of the NLS algorithm, the following 95% confidence intervals were obtained for the fundamental parameters of the model:
+
+
+```{r final.values, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 cat(paste(
-  paste0("- **Parameter** $\\alpha$: $\\alpha\\in\\left]", alpha.min %>% eq.formatter(), ", \\ ", alpha.max %>% eq.formatter(), "\\right[ m^{-1}$, which determines the scale of the expansion."),
-  paste0("- **Parameter** $\\beta$: $\\beta\\in\\left]", beta.min %>% eq.formatter(), ", \\ ", beta.max %>% eq.formatter(), "\\right[$, which links the current expansion rate to the scale factor."),
-  paste0("- **Expansion Parameter** ($X^2$): An interval of $X^2\\in\\left]", X.2.range[1] %>% eq.formatter(), ", \\ ", X.2.range[2] %>% eq.formatter(), "\\right[ m^{-2}$ was calculated, representing the dynamic constant derived from the condition of homogeneity."),
-  paste0("- **Spatial Curvature** ($k$): The resulting curvature parameter lies within the range $k\\in\\left]", k.range[1] %>% eq.formatter(), ", \\ ", k.range[2] %>% eq.formatter(), "\\right[ m^{-2}$."),
-  sep = "\n"
+ paste0("- **Parameter** $\\alpha$: $\\alpha\\in\\left]", alpha.min %>% eq.formatter(), ", \\ ", alpha.max %>% eq.formatter(), "\\right[ m^{-1}$, which determines the scale of the expansion."),
+ paste0("- **Parameter** $\\beta$: $\\beta\\in\\left]", beta.min %>% eq.formatter(), ", \\ ", beta.max %>% eq.formatter(), "\\right[$, which links the current expansion rate to the scale factor."),
+ paste0("- **Expansion Parameter** ($X^2$): An interval of $X^2\\in\\left]", X.2.range[1] %>% eq.formatter(), ", \\ ", X.2.range[2] %>% eq.formatter(), "\\right[ m^{-2}$ was calculated, representing the dynamic constant derived from the condition of homogeneity."),
+ paste0("- **Spatial Curvature** ($k$): The resulting curvature parameter lies within the range $k\\in\\left]", k.range[1] %>% eq.formatter(), ", \\ ", k.range[2] %>% eq.formatter(), "\\right[ m^{-2}$."),
+ paste0("- **Cosmological Fluid Pressure** ($P$): Sustaining the observed expansion kinematics, the vacuum pressure is bounded within $P\\in\\left]", press[1] %>% eq.formatter(), ", \\ ", press[2] %>% eq.formatter(), "\\right[ \\frac{kg}{m \\times s^2}$."),
+ paste0("- **Cosmological Constant** ($\\Lambda$): By integrating the observed matter density, the cosmological constant is empirically constrained to $\\Lambda\\in\\left]", cosm.const[1] %>% eq.formatter(), ", \\ ", cosm.const[2] %>% eq.formatter(), "\\right[ m^{-2}$."),
+ sep = "\n"
 ))
 ```
 
@@ -364,18 +454,17 @@ $$
 ## Riemann Tensor
 
 $$
-R^\alpha_{\beta\gamma\mu} = \Gamma^\alpha_{\beta\gamma,\mu} - \Gamma^\alpha_{\beta\mu,\gamma} + \Gamma^\sigma_{\beta\gamma}\Gamma^\alpha_{\sigma\mu} - \Gamma^\sigma_{\beta\mu}\Gamma^\alpha_{\sigma\gamma}
+R^\alpha_{\beta\gamma\mu} = \Gamma^\alpha_{\beta\mu,\gamma} - \Gamma^\alpha_{\beta\gamma,\mu} + \Gamma^\sigma_{\beta\mu}\Gamma^\alpha_{\sigma\gamma} - \Gamma^\sigma_{\beta\gamma}\Gamma^\alpha_{\sigma\mu}
 $$
 
 $$
 \begin{aligned}
-R^0_{r0r} &= \frac{a\ddot{a}}{kr^2 - 1}, \ R^0_{\theta 0\theta} = -a\ddot{a}r^2, \ R^0_{\phi 0\phi} = -a\ddot{a}r^2\sin^2{\theta}, \\
-R^0_{rr0} &= \frac{a\ddot{a}}{1 - kr^2}, \ R^0_{\theta\theta 0} = a\ddot{a}r^2, \ R^0_{\phi\phi 0} = a\ddot{a}r^2\sin^2{\theta}, \\
-R^r_{00r} &= R^\theta_{00\theta} = R^\phi_{00\phi} = -\frac{\ddot{a}}{a}, \
-R^r_{0r0} = R^\theta_{0\theta 0} = R^\phi_{0\phi 0} = \frac{\ddot{a}}{a}, \\
-R^r_{\theta r\theta} &= R^\phi_{\theta\phi\theta} = -r^2\left( k + \dot{a}^2 \right), \ R^r_{\phi r\phi} = R^\theta_{\phi\theta\phi} = -r^2\left( k + \dot{a}^2 \right)\sin^2{\theta}, \\
-R^r_{\theta\theta r} &= R^\phi_{\theta\theta\phi} = r^2\left( k + \dot{a}^2 \right), \ R^r_{\phi\phi r} = R^\theta_{\phi\phi\theta} = r^2\left( k + \dot{a}^2 \right)\sin^2{\theta}, \\
-R^\theta_{rr\theta} &= R^\phi_{rr\phi} = \frac{k + \dot{a}^2}{1 - kr^2}, \ R^\theta_{r\theta r} = R^\phi_{r\phi r} = \frac{k + \dot{a}^2}{kr^2 - 1}
+R^0_{r0r} &= \frac{a\ddot{a}}{1 - kr^2}, \ R^0_{\theta 0\theta} = a\ddot{a}r^2, \ R^0_{\phi 0\phi} = a\ddot{a}r^2\sin^2{\theta}, \\
+R^0_{rr0} &= \frac{a\ddot{a}}{kr^2 - 1}, \ R^0_{\theta\theta 0} = -a\ddot{a}r^2, \ R^0_{\phi\phi 0} = -a\ddot{a}r^2\sin^2{\theta}, \\
+R^r_{00r} &= R^\theta_{00\theta} = R^\phi_{00\phi} = \frac{\ddot{a}}{a}, \ R^r_{0r0} = R^\theta_{0\theta 0} = R^\phi_{0\phi 0} = -\frac{\ddot{a}}{a}, \\
+R^r_{\theta r\theta} &= R^\phi_{\theta\phi\theta} = r^2\left( k + \dot{a}^2 \right), \ R^r_{\phi r\phi} = R^\theta_{\phi\theta\phi} = r^2\left( k + \dot{a}^2 \right)\sin^2{\theta}, \\
+R^r_{\theta\theta r} &= R^\phi_{\theta\theta\phi} = -r^2\left( k + \dot{a}^2 \right), \ R^r_{\phi\phi r} = R^\theta_{\phi\phi\theta} = -r^2\left( k + \dot{a}^2 \right)\sin^2{\theta}, \\
+R^\theta_{rr\theta} &= R^\phi_{rr\phi} = \frac{k + \dot{a}^2}{kr^2 - 1}, \ R^\theta_{r\theta r} = R^\phi_{r\phi r} = \frac{k + \dot{a}^2}{1 - kr^2}
 \end{aligned}
 $$
 
@@ -387,20 +476,20 @@ $$
 
 $$
 \begin{aligned}
-K^0_{r0r0} &= K^0_{rr00} = \frac{\dot{a}\ddot{a} - a\dddot{a}}{1 - kr^2}, \ K^0_{\theta 0\theta 0} = \left( \dot{a}\ddot{a} - a\dddot{a} \right)r^2, \ K^0_{\phi 0\phi 0} = \left( \dot{a}\ddot{a} - a\dddot{a} \right)r^2\sin^2{\theta}, \\
-K^0_{\theta r\theta r} &= K^0_{r\theta r\theta} = \frac{a\dot{a}r^2}{1 - kr^2}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^0_{\phi r\phi r} = K^0_{r\phi r\phi} = \frac{a\dot{a}r^2}{1 - kr^2}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
-K^0_{rr\theta\theta} &= K^0_{\theta\theta rr} = \frac{a\dot{a}r^2}{1 - kr^2}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^0_{rr\phi\phi} = K^0_{\phi\phi rr} = \frac{a\dot{a}r^2}{1 - kr^2}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
-K^0_{\theta\theta00} &= \left( a\dddot{a} - \dot{a}\ddot{a} \right)r^2, \ K^0_{\phi\theta\phi\theta} = K^0_{\theta\phi\theta\phi} = a\dot{a}r^4\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
-K^0_{\theta\theta\phi\phi} &= K^0_{\phi\phi\theta\theta} = a\dot{a}r^4\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^0_{\phi\phi 00} = \left( a\dddot{a} - \dot{a}\ddot{a} \right)r^2\sin^2{\theta}, \\
-K^r_{00r0} &= K^\theta_{00\theta 0} = K^\phi_{00\phi 0} = \frac{\dot{a}\ddot{a} - a\dddot{a}}{a^2}, K^r_{\theta 0\theta r} = K^r_{\theta r0\theta} = K^r_{0r\theta\theta} = K^\phi_{\theta 0\theta\phi} = K^\phi_{\theta\phi 0\theta} = K^\phi_{0\phi\theta\theta} = \frac{\dot{a}r^2}{a}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
-K^r_{\phi 0\phi r} &= K^r_{\phi r0\phi} = K^r_{0r\phi\phi} = K^\theta_{\phi 0\phi\theta} = K^\theta_{\phi\theta 0\phi} = K^\theta_{0\theta\phi\phi} = K^\theta_{\phi\phi 0\theta} = K^\theta_{0\phi\theta\phi} = \frac{\dot{a}r^2}{a}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
-K^r_{\theta 0r\theta} &= K^r_{\theta\theta 0r} = K^r_{0\theta r\theta} = K^r_{\phi\phi 0r} = K^\phi_{\theta 0\phi\theta} = K^\phi_{0\theta\phi\theta} = K^\phi_{\theta\theta 0\phi} = \frac{\dot{a}r^2}{a}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
-K^r_{\phi 0r\phi} &= K^r_{0\phi r\phi} = K^\theta_{\phi 0\theta\phi} = \frac{\dot{a}r^2}{a}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^r_{0r00} = K^\theta_{0\theta 00} = K^\phi_{0\phi 00} = \frac{a\dddot{a} - \dot{a}\ddot{a}}{a^2}, \\
-K^r_{\theta r\theta 0} &= K^\phi_{\theta\phi\theta 0} = \frac{2\dot{a}r^2}{a}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^r_{\phi r\phi 0} = K^\theta_{\phi\theta\phi 0} = \frac{2\dot{a}r^2}{a}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
-K^r_{\theta\theta 00} &= \frac{2\dot{a}r^2}{a}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^r_{\phi\phi r0} = K^\theta_{\phi\phi\theta 0} = \frac{2\dot{a}r^2}{a}\sin^2{\theta}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
-K^\theta_{r0\theta r} &= K^\theta_{0r\theta r} = K^\theta_{rr0\theta} = K^\phi_{r0\phi r} = K^\phi_{0r\phi r} = K^\phi_{rr0\phi} = \frac{\dot{a}}{a\left( 1 - kr^2 \right)}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
-K^\theta_{r0r\theta} &= K^\theta_{r\theta 0r} = K^\theta_{0\theta rr} = K^\phi_{r0r\phi} = K^\phi_{r\phi 0r} = K^\phi_{0\phi rr} = \frac{\dot{a}}{a\left( 1 - kr^2 \right)}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
-K^\theta_{rr\theta 0} &= K^\phi_{rr\phi 0} = K^\phi_{\theta\theta\phi 0} = K^\phi_{r\phi r0} = \frac{2\dot{a}}{a\left( 1 - kr^2 \right)}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^\theta_{r\theta r0} = \frac{2\dot{a}}{a\left( 1 - kr^2 \right)}\left( k + \dot{a}^2 - a\ddot{a} \right)
+K^0_{r0r0} &= K^0_{rr00} = \frac{a\dddot{a} - \dot{a}\ddot{a}}{1 - kr^2}, \ K^0_{\theta 0\theta 0} = \left( a\dddot{a} - \dot{a}\ddot{a} \right)r^2, \ K^0_{\phi 0\phi 0} = \left( a\dddot{a} - \dot{a}\ddot{a} \right)r^2\sin^2{\theta}, \\
+K^0_{\theta r\theta r} &= K^0_{r\theta r\theta} = \frac{a\dot{a}r^2}{1 - kr^2}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^0_{\phi r\phi r} = K^0_{r\phi r\phi} = \frac{a\dot{a}r^2}{1 - kr^2}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^0_{rr\theta\theta} &= K^0_{\theta\theta rr} = \frac{a\dot{a}r^2}{1 - kr^2}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^0_{rr\phi\phi} = K^0_{\phi\phi rr} = \frac{a\dot{a}r^2}{1 - kr^2}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^0_{\theta\theta00} &= \left( \dot{a}\ddot{a} - a\dddot{a} \right)r^2, \ K^0_{\phi\theta\phi\theta} = K^0_{\theta\phi\theta\phi} = a\dot{a}r^4\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^0_{\theta\theta\phi\phi} &= K^0_{\phi\phi\theta\theta} = a\dot{a}r^4\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^0_{\phi\phi 00} = \left( \dot{a}\ddot{a} - a\dddot{a} \right)r^2\sin^2{\theta}, \\
+K^r_{00r0} &= K^\theta_{00\theta 0} = K^\phi_{00\phi 0} = \frac{a\dddot{a} - \dot{a}\ddot{a}}{a^2}, \ K^r_{\theta 0\theta r} = K^r_{\theta r0\theta} = K^r_{0r\theta\theta} = K^\phi_{\theta 0\theta\phi} = K^\phi_{\theta\phi 0\theta} = K^\phi_{0\phi\theta\theta} = \frac{\dot{a}r^2}{a}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^r_{\phi 0\phi r} &= K^r_{\phi r0\phi} = K^r_{0r\phi\phi} = K^\theta_{\phi 0\phi\theta} = K^\theta_{\phi\theta 0\phi} = K^\theta_{0\theta\phi\phi} = K^\theta_{\phi\phi 0\theta} = K^\theta_{0\phi\theta\phi} = \frac{\dot{a}r^2}{a}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^r_{\theta 0r\theta} &= K^r_{\theta\theta 0r} = K^r_{0\theta r\theta} = K^r_{\phi\phi 0r} = K^\phi_{\theta 0\phi\theta} = K^\phi_{0\theta\phi\theta} = K^\phi_{\theta\theta 0\phi} = \frac{\dot{a}r^2}{a}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^r_{\phi 0r\phi} &= K^r_{0\phi r\phi} = K^\theta_{\phi 0\theta\phi} = \frac{\dot{a}r^2}{a}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^r_{0r00} = K^\theta_{0\theta 00} = K^\phi_{0\phi 00} = \frac{\dot{a}\ddot{a} - a\dddot{a}}{a^2}, \\
+K^r_{\theta r\theta 0} &= K^\phi_{\theta\phi\theta 0} = \frac{2\dot{a}r^2}{a}\left( a\ddot{a} - k - \dot{a}^2 \right), \ K^r_{\phi r\phi 0} = K^\theta_{\phi\theta\phi 0} = \frac{2\dot{a}r^2}{a}\sin^2{\theta}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^r_{\theta\theta 00} &= \frac{2\dot{a}r^2}{a}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^r_{\phi\phi r0} = K^\theta_{\phi\phi\theta 0} = \frac{2\dot{a}r^2}{a}\sin^2{\theta}\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^\theta_{r0\theta r} &= K^\theta_{0r\theta r} = K^\theta_{rr0\theta} = K^\phi_{r0\phi r} = K^\phi_{0r\phi r} = K^\phi_{rr0\phi} = \frac{\dot{a}}{a\left( 1 - kr^2 \right)}\left( k + \dot{a}^2 - a\ddot{a} \right), \\
+K^\theta_{r0r\theta} &= K^\theta_{r\theta 0r} = K^\theta_{0\theta rr} = K^\phi_{r0r\phi} = K^\phi_{r\phi 0r} = K^\phi_{0\phi rr} = \frac{\dot{a}}{a\left( 1 - kr^2 \right)}\left( a\ddot{a} - k - \dot{a}^2 \right), \\
+K^\theta_{rr\theta 0} &= K^\phi_{rr\phi 0} = K^\phi_{\theta\theta\phi 0} = K^\phi_{r\phi r0} = \frac{2\dot{a}}{a\left( 1 - kr^2 \right)}\left( k + \dot{a}^2 - a\ddot{a} \right), \ K^\theta_{r\theta r0} = \frac{2\dot{a}}{a\left( 1 - kr^2 \right)}\left( a\ddot{a} - k - \dot{a}^2 \right)
 \end{aligned}
 $$
 
@@ -412,10 +501,10 @@ $$
 
 $$
 \begin{aligned}
-R_{00} &= \frac{3\ddot{a}}{a}, \\
-R_{rr} &= \frac{a\ddot{a} + 2k + 2\dot{a}^2}{kr^2 - 1}, \\
-R_{\theta\theta} &= -r^2\left( a\ddot{a} + 2k + 2\dot{a}^2 \right), \\
-R_{\phi\phi} &= -r^2\sin^2{\theta}\left( a\ddot{a} + 2k + 2\dot{a}^2 \right)
+R_{00} &= -\frac{3\ddot{a}}{a}, \\
+R_{rr} &= \frac{a\ddot{a} + 2k + 2\dot{a}^2}{1 - kr^2}, \\
+R_{\theta\theta} &= r^2\left( a\ddot{a} + 2k + 2\dot{a}^2 \right), \\
+R_{\phi\phi} &= r^2\sin^2{\theta}\left( a\ddot{a} + 2k + 2\dot{a}^2 \right)
 \end{aligned}
 $$
 
@@ -426,22 +515,7 @@ R = R^\alpha_\alpha = g^{\alpha\beta}R_{\alpha\beta}
 $$
 
 $$
-R = -\frac{6}{a^2}\left( a\ddot{a} + k + \dot{a}^2 \right)
-$$
-
-## Einstein Tensor
-
-$$
-G_{\alpha\beta} = R_{\alpha\beta} - \frac{1}{2}g_{\alpha\beta}R
-$$
-
-$$
-\begin{aligned}
-G_{00} &= \frac{a\ddot{a} - 2k - 2\dot{a}^2}{a^2}, \\
-G_{rr} &= \frac{k + \dot{a}^2 - a\ddot{a}}{1 - kr^2}, \\
-G_{\theta\theta} &= r^2\left( k + \dot{a}^2 - a\ddot{a} \right), \\
-G_{\phi\phi} &= r^2\sin^2{\theta}\left( k + \dot{a}^2 - a\ddot{a} \right)
-\end{aligned}
+R = \frac{6}{a^2}\left( a\ddot{a} + k + \dot{a}^2 \right)
 $$
 
 ## Cosmological Principle
@@ -461,6 +535,35 @@ a &= \frac{1}{2X}\left( Ye^{Xct} + \frac{k}{Y}e^{-Xct} \right)\\
 \end{aligned}
 $$
 
+## Einstein Tensor
+
+$$
+G_{\alpha\beta} = R_{\alpha\beta} - \frac{1}{2}g_{\alpha\beta}R
+$$
+
+$$
+\begin{aligned}
+G_{00} &= \frac{3}{a^2} \left( k + \dot{a}^2 \right) = 3X^2, \\
+G_{rr} &= \frac{2a\ddot{a} + k + \dot{a}^2}{kr^2 - 1} = \frac{3X^2a^2}{kr^2 - 1}, \\
+G_{\theta\theta} &= -r^2\left( 2a\ddot{a} + k + \dot{a}^2 \right) = -3X^2a^2r^2, \\
+G_{\phi\phi} &= -r^2\sin^2{\theta}\left( 2a\ddot{a} + k + \dot{a}^2 \right) = -3X^2a^2r^2\sin^2{\theta} \\
+G_{\alpha\beta} &= -3X^2g_{\alpha\beta}
+\end{aligned}
+$$
+
+## Pressure & Cosmological Constant
+
+$$
+\begin{aligned}
+G_{\alpha\beta} + \Lambda g_{\alpha\beta} &= \frac{8 \pi G}{c^4} T_{\alpha\beta} \\
+\left( -3X^2 + \Lambda \right)g_{\alpha\beta} &= \frac{8 \pi G}{c^4} \left( \left( \rho + \frac{P}{c^2} \right) u_\alpha u_\beta + P g_{\alpha\beta} \right) \\
+u^\alpha e_\alpha &= c e_0 \Rightarrow u_\alpha e^\alpha = -ce^0 \\
+\rho &= \frac{c^2}{8 \pi G} \left( 3X^2 - \Lambda \right) \\
+P &= \frac{c^4}{8 \pi G} \left( -3X^2 + \Lambda \right) = -\rho c^2 \\
+\Lambda &= 3X^2 - \frac{8 \pi G}{c^2}\rho
+\end{aligned}
+$$
+
 ## Measurements and Calculations
 
 $$
@@ -471,7 +574,7 @@ ct &= 0 \rightarrow a = a_0 \\
 ct &= -D \rightarrow a = a\left( -D \right) \\
 1 + z &= 1 + \frac{V}{c} = \frac{a_0}{a(-D)} \\
 a &= a_0\cosh{Xct} + \frac{\dot{a}_0}{X}\sinh{Xct} \\
-\frac{1}{1 + \frac{V}{c}} &= \cosh{XD} - \frac{\dot{a}_0}{a_0X}\sinh{XD} \\
+\frac{a(-D)}{a_0} &= \frac{1}{1 + \frac{V}{c}} = \cosh{XD} - \frac{\dot{a}_0}{a_0X}\sinh{XD} \\
 \mathbf{y} &= \cosh{\alpha\mathbf{x}} - \beta\sinh{\alpha\mathbf{x}} \\
 \mathbf{y} &:= \frac{1}{1 + \frac{V}{c}} \wedge \mathbf{x} := D \wedge \alpha := X \wedge \beta := \frac{\dot{a}_0}{a_0X} \\
 \therefore X &= \alpha \wedge k = a_0^2\alpha^2\left( 1 - \beta^2 \right)
@@ -481,11 +584,14 @@ $$
 ## Results
 
 ```{r final.values.app, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+nd = 6
 cat(paste(
-  paste0("$$\n\\begin{aligned}\n\\alpha&\\in\\left]", alpha.min %>% eq.formatter(digits = 4), ", \\ ", alpha.max %>% eq.formatter(digits = 4), "\\right[ m^{-1}"),
-  paste0("\\beta&\\in\\left]", beta.min %>% eq.formatter(digits = 4), ", \\ ", beta.max %>% eq.formatter(digits = 4), "\\right["),
-  paste0("X^2&\\in\\left]", X.2.range[1] %>% eq.formatter(digits = 4), ", \\ ", X.2.range[2] %>% eq.formatter(digits = 4), "\\right[ m^{-2}"),
-  paste0("k&\\in\\left]", k.range[1] %>% eq.formatter(digits = 4), ", \\ ", k.range[2] %>% eq.formatter(digits = 4), "\\right[ m^{-2}"),
+  paste0("$$\n\\begin{aligned}\n\\alpha&\\in\\left]", alpha.min %>% eq.formatter(digits = nd), ", \\ ", alpha.max %>% eq.formatter(digits = nd), "\\right[ m^{-1}"),
+  paste0("\\beta&\\in\\left]", beta.min %>% eq.formatter(digits = nd), ", \\ ", beta.max %>% eq.formatter(digits = nd), "\\right["),
+  paste0("X^2&\\in\\left]", X.2.range[1] %>% eq.formatter(digits = nd), ", \\ ", X.2.range[2] %>% eq.formatter(digits = nd), "\\right[ m^{-2}"),
+  paste0("k&\\in\\left]", k.range[1] %>% eq.formatter(digits = nd), ", \\ ", k.range[2] %>% eq.formatter(digits = nd), "\\right[ m^{-2}"),
+  paste0("P&\\in\\left]", press[1] %>% eq.formatter(digits = nd), ", \\ ", press[2] %>% eq.formatter(digits = nd), "\\right[ \\frac{kg}{m \\times s^2}"),
+  paste0("\\Lambda&\\in\\left]", cosm.const[1] %>% eq.formatter(digits = nd), ", \\ ", cosm.const[2] %>% eq.formatter(digits = nd), "\\right[ m^{-2}"),
   "\\end{aligned}\n$$",
   sep = "\\\\\n"
 ))
