@@ -428,6 +428,7 @@ $$
 
 $$
 \begin{aligned}
+{ds}^2 &= -c^2{dt}^2 + a^2 \left( \frac{{dr}^2}{1 - kr^2} + r^2 \left( {d\theta}^2 + \sin^2\theta{d\phi}^2 \right) \right) \\
 g_{00} &= -1, \ g_{rr} = \frac{a^2}{1 - kr^2}, \ g_{\theta\theta} = a^2r^2, \ g_{\phi\phi} = a^2r^2\sin^2{\theta}, \\
 g^{00} &= -1, \ g^{rr} = \frac{1 - kr^2}{a^2}, \ g^{\theta\theta} = \frac{1}{a^2r^2}, \ g^{\phi\phi} = \frac{\csc^2{\theta}}{a^2r^2}
 \end{aligned}
@@ -556,8 +557,14 @@ $$
 $$
 \begin{aligned}
 G_{\alpha\beta} + \Lambda g_{\alpha\beta} &= \frac{8 \pi G}{c^4} T_{\alpha\beta} \\
-\left( -3X^2 + \Lambda \right)g_{\alpha\beta} &= \frac{8 \pi G}{c^4} \left( \left( \rho + \frac{P}{c^2} \right) u_\alpha u_\beta + P g_{\alpha\beta} \right) \\
+T_{\alpha\beta} &= \left( \rho + \frac{P}{c^2} \right) u_\alpha u_\beta + P g_{\alpha\beta} \\
 u^\alpha e_\alpha &= c e_0 \Rightarrow u_\alpha e^\alpha = -ce^0 \\
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\left( -3X^2 + \Lambda \right)g_{\alpha\beta} &= \frac{8 \pi G}{c^4} \left( \left( \rho + \frac{P}{c^2} \right) u_\alpha u_\beta + P g_{\alpha\beta} \right) \\
 \rho &= \frac{c^2}{8 \pi G} \left( 3X^2 - \Lambda \right) \\
 P &= \frac{c^4}{8 \pi G} \left( -3X^2 + \Lambda \right) = -\rho c^2 \\
 \Lambda &= 3X^2 - \frac{8 \pi G}{c^2}\rho
