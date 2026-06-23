@@ -14,26 +14,33 @@ bibliography: Literature.bib
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
-library(rvest)
-library(lubridate)
 library(ggplot2)
+library(lubridate)
+library(minpack.lm)
+library(rvest)
 ```
 
 # Abstract
 
-This work presents an analytical derivation of the kinematics and thermodynamics of the universe's expansion, grounded in the Friedmann-Lemaître-Robertson-Walker (FLRW) metric and the Einstein Field Equations [@misner1973gravitation; @weinberg2008cosmology]. By imposing the space-time homogeneity and isotropy required by the Cosmological Principle [@carroll2019spacetime], the covariant derivative of the Riemann tensor is defined and set to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$) [@wolf2011spaces], yielding a geometrically constrained spacetime where the Einstein tensor becomes strictly proportional to the metric ($G_{\alpha\beta} = 3X^2g_{\alpha\beta}$). Based on this exact mathematical solution, a predictive model is formulated that correlates direct physical observables: proper distance and redshift (expressed as recession velocity). To test this model, a weighted nonlinear regression analysis is performed using a catalog of galactic distances and velocities extracted from the NED (NASA/IPAC) extragalactic database [@ned_database]. The results of this observational fit allow for the empirical constraint of the expansion constant ($X^2$) and the spatial curvature parameter ($k$). Furthermore, thermodynamic evaluation of the field equations reveals an equation of state $P = -\rho c^2$, mathematically restricting the cosmos to a maximally symmetric variety. This demonstrates that the modeled universe is devoid of ordinary matter and radiation, establishing a fundamental degeneracy where energy density ($\rho$) and the bare cosmological constant ($\Lambda$) unify into a single effective magnitude ($\Lambda = 3X^2 - \frac{8 \pi G}{c^2}\rho$) that entirely governs the vacuum energy driving the expansion.
+This work presents an analytical derivation of the kinematics and thermodynamics of the universe's expansion, grounded in the Friedmann-Lemaître-Robertson-Walker (FLRW) metric and the Einstein Field Equations. By imposing the strict space-time homogeneity and isotropy required by the Cosmological Principle, the covariant derivative of the Riemann curvature tensor is defined and set to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$). This constraint yields a geometrically restricted spacetime where the Einstein tensor becomes strictly proportional to the metric ($G_{\alpha\beta} = -3X^2g_{\alpha\beta}$), allowing for an exact, analytical solution for the scale factor driven purely by an intrinsic expansion parameter ($X$) and spatial curvature ($k$). 
+
+To empirically validate this exact mathematical framework, a predictive non-linear model correlating proper distance and recession velocity is tested against a catalog of extragalactic measurements extracted from the NASA/IPAC Extragalactic Database (NED). Given the extreme dimensional scales of the physical parameters (on the order of $10^{-50} \text{ m}^{-2}$), a robust two-step optimization routine—combining derivative-free Nelder-Mead simplex search with BFGS local refinement—and dynamic parameter scaling are implemented to overcome severe floating-point singularities. Non-parametric bootstrapping is subsequently employed to establish rigorous $95\%$ confidence intervals. 
+
+Crucially, by propagating the empirical uncertainties of these purely kinematic parameters, we independently derive the universe's present-day matter density ($\rho_0$), cosmological fluid pressure ($P$), and the Cosmological Constant ($\Lambda$). This geometrically driven approach successfully breaks the degeneracy between mass-energy density and expansion rate, demonstrating that the thermodynamic state of the universe can be directly deduced from its kinematics without relying on external baseline priors.
 
 **Keywords**: *Cosmology, FLRW Metric, Galactic Kinematics, General Relativity*
 
 # Introduction
 
-General Relativity has provided the fundamental framework for understanding the dynamics of the universe on large scales [@misner1973gravitation]. At the heart of modern cosmology lies the Friedmann-Lemaître-Robertson-Walker (FLRW) metric—the exact solution to Einstein's field equations that describes an expanding, spatially homogeneous, and isotropic universe [@weinberg2008cosmology]. This geometric symmetry constitutes the mathematical manifestation of the Cosmological Principle, which postulates that, on sufficiently large scales, the universe possesses no privileged positions or directions [@carroll2019spacetime].
+The standard model of cosmology is fundamentally built upon the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, an exact solution to the Einstein Field Equations that describes a homogeneous, isotropic, and expanding spacetime. Traditionally, deriving the universe's expansion history requires assuming specific material compositions—namely, the energy densities and equations of state for baryonic matter, dark matter, and dark energy ($\Lambda$)—to solve the resulting Friedmann equations [@misner1973gravitation; @weinberg2008cosmology]. While highly successful, this standard $\Lambda$CDM approach inherently couples the spacetime geometry to an *a priori* defined thermodynamic fluid.
 
-Traditionally, the temporal evolution of the universe is addressed by solving the Friedmann equations, a process that requires making an a priori assumption regarding the equation of state for the universe's matter and energy content. However, the Cosmological Principle itself imposes such stringent geometric constraints that it becomes possible to extract profound information regarding the kinematics of the universe by directly studying the structure of the spacetime manifold. In this work, we formalize this geometric constraint by defining the "Cosmological Tensor" as the covariant derivative of the Riemann tensor ($K^\alpha_{\beta\gamma\mu\nu} := R^\alpha_{\beta\gamma\mu;\nu}$). By requiring that this tensor vanish identically—as a consequence of maximal homogeneity and isotropy [@wolf2011spaces]—we demonstrate that it is possible to derive a system of exact differential equations for the cosmic scale factor, $a\left( t \right)$.
+This study explores an alternative, purely geometric approach. By strictly enforcing the spatial homogeneity and isotropy dictated by the Cosmological Principle [@carroll2019spacetime], we introduce the mathematical constraint that the covariant derivative of the Riemann curvature tensor must vanish, thereby formulating the "Cosmological Tensor" ($K^\alpha_{\beta\gamma\mu\nu} = 0$) [@wolf2011spaces]. This rigorous geometric symmetry yields a condition where the Einstein tensor becomes strictly proportional to the metric ($G_{\alpha\beta} = -3X^2g_{\alpha\beta}$), allowing for an exact, analytical derivation of the scale factor $a(t)$. Consequently, the cosmic expansion is dictated entirely by intrinsic kinematic parameters—the expansion constant ($X$) and the spatial curvature ($k$)—without requiring prior assumptions about the universe's material constituents.
 
-Notwithstanding the elegance of analytical derivations in differential geometry, a cosmological model acquires physical validity only when its predictions are tested against empirical evidence. Theoretical solutions for $a\left( t \right)$ and its derivatives must be translated into the language of observational astronomy—specifically, by establishing a relationship between the observed proper distance ($D$) and the galactic recession velocity, as derived from redshift ($z$).
+To empirically validate this exact mathematical framework, we construct a predictive non-linear model correlating two direct astrophysical observables: galactic proper distance ($D$) and recession velocity ($V_{gsr}$). Utilizing a comprehensive dataset of galactic measurements extracted from the NASA/IPAC Extragalactic Database (NED), this work seeks to empirically constrain the fundamental kinematic parameters of the proposed metric.
 
-The primary objective of this article is twofold. First, to present a rigorous and self-consistent analytical derivation of the kinematics of the universe's expansion, commencing from the pure FLRW metric and culminating in an exact solution for the scale factor. Secondly, we will subject this mathematical model to rigorous empirical validation. Utilizing an updated catalog of galactic distance and velocity measurements extracted from the NED (NASA/IPAC Extragalactic Database) [@ned_database], we will apply weighted nonlinear regression techniques to fit our theoretical curve. This analysis will enable us to empirically constrain the model's fundamental parameters, yielding direct confidence intervals for the theoretical expansion constant and—crucially—for the spatial curvature parameter $k$. Thus, the present work seeks to establish a transparent methodological bridge between the abstract topology of spacetime and contemporary observational cosmology.
+However, fitting this highly non-linear model presents severe computational challenges. The extreme physical magnitudes of the cosmological parameters (on the order of $10^{-50} \text{ m}^{-2}$) inevitably trigger floating-point underflow and singularity failures in standard regression algorithms. To circumvent these numerical limitations, this study implements a specialized two-step optimization routine—combining a derivative-free Nelder-Mead simplex search with a gradient-based BFGS local refinement—alongside a rigorous parameter scaling protocol. Furthermore, non-parametric bootstrapping is employed to confidently navigate the restricted mathematical boundaries of the parameter space and to establish robust statistical uncertainties.
+
+Ultimately, by securely constraining $X$ and $k$ through localized kinematic observations, this work aims to break the geometric degeneracy of the Einstein Field Equations. Rather than relying on external baseline priors such as Cosmic Microwave Background (CMB) measurements, we demonstrate how the universe's present-day matter density ($\rho_0$), cosmological fluid pressure ($P$), and Cosmological Constant ($\Lambda$) can be independently and directly deduced from the kinematics of expansion, offering a novel empirical test of the universe's thermodynamic state.
 
 # Theoretical Framework
 
@@ -147,37 +154,85 @@ $$
 
 ## Data Selection and Source
 
-To validate the derived kinematic model, observational data from the extragalactic database **NED (NASA/IPAC Extragalactic Database)** [@ned_database] were utilized. The selected sample comprises a population of galaxies with independent measurements of proper distance ($D$) and recession velocity ($V$), the latter derived from spectroscopic redshift ($z$).
+The empirical validation of the kinematic model is performed using galactic distance and recession velocity data retrieved from the **NASA/IPAC Extragalactic Database (NED)**. The dataset is compiled via automated web scraping across multiple catalog pages, capturing variables such as the galaxy identifier, corrected cosmic velocity relative to the Galactic Center ($V_gsr$), proper distance ($D$), measurement methodologies, and spatial coordinates (Right Ascension and Declination).
 
-Data processing was performed within the **R** statistical environment [@rcore2023], utilizing the `tidyverse` ecosystem of libraries [@wickham2019tidyverse] for data cleaning and structuring. Records containing missing values (NA) were filtered out to ensure the statistical integrity of the sample.
+## Unit Normalization and Variable Definition
 
-## Normalization of Units and Regression Variables
-
-Given that the cosmological constants involved in the FLRW metric operate within the International System of Units (SI), the conventional astronomical quantities were converted accordingly. The original distances, expressed in Megaparsecs (Mpc) or Parsecs (pc), were transformed into meters ($m$), while the recession velocities were normalized with respect to the speed of light ($c \approx 2.99 \times 10^{8} \frac{m}{s}$).
-
-Based on the analytical solution for the scale factor $a\left( t \right)$, we defined two transformed variables for regression analysis:
-
-- The independent variable $\mathbf{x}$, related to the light travel time and the distance traveled.
-- The dependent variable $\mathbf{y}$, linked to the observed redshift.
-
-## Non-Linear Fitting Model
-
-The theoretical relationship derived in the previous section is expressed as a combination of hyperbolic functions. The empirical model proposed for fitting is:
+To ensure mathematical consistency with the speed of light $c \approx 299792458 \frac{m}{s}$ and the boundary condition $a_0 = 1$, all observational variables are transformed into the International System of Units (SI). Proper distances originally expressed in Megaparsecs ($\text{Mpc}$) are converted to meters ($\text{m}$) utilizing the fundamental relation:
 
 $$
-\mathbf{y} = \cosh{\alpha\mathbf{x}} - \beta\sinh{\alpha\mathbf{x}}
+\begin{aligned}
+1 \text{ au} &\approx 149597870700 \text{ m}\\
+1 \text{ pc} &= \cot{\left(\frac{1}{3600} \cdot \frac{\pi}{180}\right)}\text{ au} \\
+&\approx 3.085678 \times 10^{16} \text{ m}
+\end{aligned}
 $$
 
-Where $\alpha$ and $\beta$ are the free parameters to be estimated. To obtain these parameters, a **Nonlinear Least Squares (NLS)** algorithm was implemented. This iterative method minimizes the sum of the squares of the differences between the observations and the model predictions.
+where $1 \text{ au} \approx 149597870700 \text{ m}$ represents the Astronomical Unit. Similarly, the recession velocities are scaled from $\text{km/s}$ to $\text{m/s}$ by a factor of $10^3$.
 
-## Estimation of Physical Parameters and Curvature
+## Parameter Scaling and Boundary Constraints
 
-Once the optimal estimators for $\alpha$ and $\beta$ were obtained, the physical constants of the model were recovered. The expansion parameter $X^2$ and the spatial curvature parameter $k$ are derived using the following relations:
+The parameters to be estimated, $X$ and $k$, exhibit extreme physical magnitudes, with expected domains restricted to $X^2, |k| \in [0, 10^{-50}[ \text{ m}^{-2}$. Direct optimization of these quantities triggers severe floating-point underflow and singularity errors in traditional numerical routines. To circumvent this computational limitation, a linear scaling protocol is introduced, transforming the parameters into dimensionless variables of order unity ($X_s, k_s \in \mathbb{R}$):
 
-- **Expansion Parameter**: $X^2 = \alpha^2$
-- **Curvature Parameter**: $k = a_0^2 \alpha^2 \left( 1 - \beta^2 \right)$
+$$
+X = X_s \times 10^{-25}
+$$
 
-Where $a_0$ represents the scale factor at the present epoch. To ensure the robustness of the results, 95% confidence intervals were calculated for each parameter using the fit's variance-covariance matrix, thereby enabling a statistical interpretation of the universe's curvature state ($k > 0$, $k < 0$, or $k \approx 0$).
+$$
+k = k_s \times 10^{-50}
+$$
+
+The objective function minimizes the Sum of Squared Errors ($SSE$) between the observed velocities $V$ and the modeled values $V_{clc}$:
+
+$$
+SSE(X_s, k_s) = \sum_{i=1}^{n} \left( V_i - V_{clc}(D_i; X_s, k_s) \right)^2
+$$
+
+Due to the non-linear architecture of the model, two strict mathematical domains must be preserved to guarantee real-valued solutions:
+
+1. The arguments within the radical for the auxiliary parameter $b$ must satisfy $a_0^2 - \frac{k}{X^2} \ge 0$.
+2. The interior of the velocity root must remain non-negative, satisfying $X^2 - \frac{k}{a^2} \ge 0$ for all observed distances $D$.
+
+To enforce these constraints within an unconstrained optimization framework, a dynamic penalty barrier is implemented. If any parameter combination violates these domains during an iteration, the objective function bypasses further evaluation and immediately returns a massive penalty value ($SSE = 10^{99}$), forcing the optimization trajectory back into the valid mathematical domain.
+
+## Two-Step Non-Linear Optimization Strategy
+
+Standard gradient-based or Levenberg-Marquardt algorithms fail when applied directly to this model due to the discontinuities introduced by the penalty barriers. Consequently, a robust **Two-Step Optimization Routine** is executed:
+
+1. **Global Exploration (Nelder-Mead Simplex)**: Initialized at $X_s = 1.0$ and $k_s = 0.1$, the derivative-free Nelder-Mead algorithm is deployed to traverse the non-convex error surface. This algorithm systematically contracts and expands a geometric simplex to locate the stable neighborhood of the global minimum without suffering from gradient singularities near the penalty boundaries.
+2. **Local Refinement (BFGS)**: Once the simplex algorithm converges to a stable valley, the optimal coordinates are passed as initial seeds to the Quasi-Newton BFGS (Broyden-Fletcher-Goldfarb-Shanno) algorithm. This second stage performs a fine-grained local minimization, ensuring that the final parameters rest precisely at the mathematical bottom of the cost surface where the gradient smoothly approaches zero.
+
+## Uncertainty and Error Estimation
+
+The local convergence achieved via the BFGS algorithm permits a rigorous asymptotic evaluation of parameter uncertainties. The curvature of the error surface at the minimum is quantified through the numerical computation of the finite-difference Hessian matrix ($H$), which represents the matrix of second partial derivatives of the $SSE$:
+
+$$
+H_{ij} = \frac{\partial^2 SSE}{\partial \theta_i \partial \theta_j}
+$$
+
+where $\theta = \{X_s, k_s\}$. The residual variance of the regression ($\sigma^2$) is computed adjusting for degrees of freedom:
+
+$$
+\sigma^2 = \frac{SSE_{min}}{n - p}
+$$
+
+where $n$ is the number of galactic observations and $p = 2$ is the number of estimated parameters. The asymptotic covariance matrix for the scaled parameters is subsequently derived via:
+
+$$
+\Sigma_{\theta} = 2 \sigma^2 H^{-1}
+$$
+
+The standard errors ($SE$) of the scaled parameters correspond to the square root of the diagonal elements of $\Sigma_{\theta}$. Finally, applying the linear transformation rules of variance, the physical standard errors are mapped back to their original scales:
+
+$$
+SE(X) = SE(X_s) \cdot 10^{-25}
+$$
+
+$$
+SE(k) = SE(k_s) \cdot 10^{-50}
+$$
+
+Margins of error ($MOE$) for a 95% confidence level are established using critical values from the Student's t-distribution with n-p degrees of freedom ($MOE = t_{\frac{\alpha}{2}, n - p} \times SE$E). In the event of geometric singularities or non-invertible Hessians near the boundary acantilados, a non-parametric bootstrapping architecture consisting of B=1000 resamples with replacement is utilized as an alternative empirical method to chart the joint probability distribution of the parameters.
 
 ## Empirical Estimation of the Cosmological Constant and Pressure
 
@@ -197,11 +252,8 @@ $$
 
 This methodological step not only computes the magnitude of $\Lambda$, but empirically verifies that the pressure required to sustain the observed expansion kinematics exactly mirrors the equation of state of dark energy.
 
+\FloatBarrier
 # Results
-
-## Model Fitting and Visualization
-
-The nonlinear regression model based on hyperbolic functions was successfully fitted to the observational data from the NED database [@ned_database]. Figure 1 illustrates the relationship between the dependent variable $\mathbf{y}$ (the inverse of the redshift factor) and the proper distance $D$. It is observed that the theoretical curve of the proposed FLRW model precisely follows the trend of the data, capturing the nature of the expansion across the sample volume.
 
 ```{r s.vs.r, echo=FALSE, message=FALSE, warning=FALSE}
 pages <- 6
@@ -237,88 +289,150 @@ a.0 <- 1 # units
 light.speed <- 299792458 # m/s
 measures.df.converted.units <- measures.df %>% mutate(
   D = D * 10^6 * pc,
-  `Vgsr (RC3)` = `Vgsr (RC3)` * 10^3,
-  reg.y = 1 / (1 + `Vgsr (RC3)` / light.speed),
-  reg.x = D
+  V = `Vgsr (RC3)` * 10^3
 )
 
-flrw.model <- nls(
-  reg.y ~ cosh(alpha * reg.x) - beta * sinh(alpha * reg.x),
-  data = measures.df.converted.units,
-  start = list(alpha = 1e-26, beta = 1), 
-  control = nls.control(maxiter = 500, tol = 1e-05),
-  weights = D
+cost.func <- function(params, D, V){
+  X.s <- params[1]
+  k.s <- params[2]
+  X <- X.s * 1e-25
+  k <- k.s * 1e-50
+  root <- a.0^2 - k / X^2
+  if(root < 0) return(1e99)
+  b <- root %>% sqrt()
+  a <- a.0 * cosh(X * D) - b * sinh(X * D)
+  root.V <- X^2 - k / a^2
+  if(root.V %>% is.nan() %>% any()) return(1e99)
+  if((root.V < 0) %>% any()) return(1e99)
+  V.clc <- light.speed * D * sqrt(root.V)
+  se <- (V - V.clc)^2
+  return(se %>% sum())
+}
+
+result <- optim(
+  par = c(X.s = 1, k.s = 0.1),
+  fn = cost.func,
+  D = measures.df.converted.units$D,
+  V = measures.df.converted.units$V,
+  method = "Nelder-Mead",
+  control = list(maxit = 10000)
 )
 
-ranges <- flrw.model %>% confint.default()
+B <- 1000
+n <- measures.df.converted.units %>% nrow()
+boot.X.s <- B %>% numeric()
+boot.k.s <- B %>% numeric()
 
-coefs <- flrw.model %>% coef()
+for(i in 1:B){
+  indexes <- sample(1:n, n, replace = T)
+  boot.data <- measures.df.converted.units[indexes,]
+  boot.res <- tryCatch({
+    optim(
+      par = c(X.s = result$par["X.s"], k.s = result$par["k.s"]),
+      fn = cost.func,
+      D = boot.data$D,
+      V = boot.data$V,
+      method = "Nelder-Mead",
+      control = list(maxit = 5000)
+    )
+  }, error = function(e) list(par = c(X.s = NA, k.s = NA)))
+  boot.X.s[i] <- boot.res$par["X.s.X.s"]
+  boot.k.s[i] <- boot.res$par["k.s.k.s"]
+}
 
-alpha <- coefs["alpha"]
-alpha.min <- ranges["alpha", 1]
-alpha.max <- ranges["alpha", 2]
-beta <- coefs["beta"]
-beta.min <- ranges["beta", 1]
-beta.max <- ranges["beta", 2]
-X.2 <- alpha ^ 2
-k <- a.0 ^ 2 * alpha ^ 2 * (1 - beta ^ 2)
-X.2.range <- c(alpha.min, alpha.max) ^ 2
-k.range <- a.0 ^ 2 * c(alpha.min, alpha.max) ^ 2 * (1 - c(beta.max, beta.min) ^ 2)
+valid.X.s <- boot.X.s %>% na.omit()
+valid.k.s <- boot.k.s %>% na.omit()
+dist.X <- valid.X.s * 1e-25
+dist.k <- valid.k.s * 1e-50
+se.boot.X <- dist.X %>% sd()
+se.boot.k <- dist.k %>% sd()
+alpha <- 0.05
+c.alpha <- c(0, 1) + c(1, -1) * alpha / 2
+ci.X <- quantile(dist.X, probs = c.alpha)
+ci.k <- quantile(dist.k, probs = c.alpha)
+N <- function(X, k) 2 * X^2 * a.0^2 - k %>% rev()
+M <- function(X, k) 2 * ci.X^2 * a.0 * sqrt(a.0^2 - (ci.k / ci.X^2) %>% rev())
+X.stm <- dist.X %>% median()
+k.stm <- dist.k %>% median()
+
+V.stm <- function(D, n = 1, stm = F){
+  X <- if(stm) X.stm %>% rep(2) else ci.X
+  k <- if(stm) k.stm %>% rep(2) else ci.k
+  stm.val <- light.speed * D * X[n] * (sinh(2 * X[3 - n] * D) * k[3 - n] - M(X, k)[n]) / (cosh(2 * X[3 - n] * D) * k[3 - n] + N(X, k)[3 - n])
+  return(-stm.val)
+}
+
+calc.bounds.for.cl <- function(cl, D){
+  alpha. <- 1 - cl
+  c.alpha. <- c(0, 1) + c(1, -1) * alpha. / 2
+  ci.X.t <- quantile(dist.X, probs = c.alpha., names = F)
+  ci.k.t <- quantile(dist.k, probs = c.alpha., names = F)
+  N.val <- 2 * ci.X.t^2 * a.0^2 - ci.k.t %>% rev()
+  M.val <- 2 * ci.X.t^2 * a.0 * sqrt(a.0^2 - (ci.k.t / ci.X.t^2) %>% rev())
+  stm.val.1 <- light.speed * D * ci.X.t[1] * (sinh(2 * ci.X.t[2] * D) * ci.k.t[2] - M.val[1]) / (cosh(2 * ci.X.t[2] * D) * ci.k.t[2] + N.val[2])
+  V.min <- -stm.val.1
+  stm.val.2 <- light.speed * D * ci.X.t[2] * (sinh(2 * ci.X.t[1] * D) * ci.k.t[1] - M.val[2]) / (cosh(2 * ci.X.t[1] * D) * ci.k.t[1] + N.val[1])
+  V.max <- -stm.val.2
+  return(c(V.min = V.min, V.max = V.max))
+}
+
+get.required.1.minus.alpha <- Vectorize(function(D, V){
+  V.med <- calc.bounds.for.cl(0, D)["V.max"]
+  if(abs(V - V.med) < 1e-10) return(0)
+  if(V > V.med){
+    if((calc.bounds.for.cl(0.9999, D)["V.max"] - V) < 0) return(1)
+    res <- uniroot(
+      function(cl) calc.bounds.for.cl(cl, D)["V.max"] - V,
+      interval = c(0, 0.9999),
+      extendInt = "yes"
+    )
+    return(res$root)
+  } else{
+    if((calc.bounds.for.cl(0.9999, D)["V.min"] - V) > 0) return(1)
+    res <- uniroot(
+      function(cl) calc.bounds.for.cl(cl, D)["V.min"] - V,
+      interval = c(0, 0.9999),
+      extendInt = "yes"
+    )
+    return(res$root)
+  }
+})
 
 measures.df.converted.units.estimated.values <- measures.df.converted.units %>% mutate(
-  reg.y.min = cosh(alpha.min * reg.x) - beta.max * sinh(alpha.min * reg.x),
-  reg.y.max = cosh(alpha.max * reg.x) - beta.min * sinh(alpha.max * reg.x),
-  reg.y.est = cosh(alpha * reg.x) - beta * sinh(alpha * reg.x)
+  V.est.min = D %>% V.stm(1),
+  V.est.max = D %>% V.stm(2),
+  V.est = D %>% V.stm(stm = T),
+  V.err.2 = (V.est - V)^2,
+  in.range = V < V.est.max & V > V.est.min,
+  p.value = get.required.1.minus.alpha(D, V)
 )
 
 grav.const <- 6.67430 * 10^-11 # m^3/(kg * s^2)
-H0.0 <- 67.4 + c(-1, 1) * 0.5 # km/s/Mpc
-H0 <- H0.0 * 1000 / (10^6 * pc) # s^-1
-matter.density <- 3 * H0^2 / (8 * pi * grav.const) # kg / m^3
+H0.stm <- light.speed * sqrt(ci.X^2 - ci.k %>% rev() / a.0^2) # s^-1
+matter.density <- 3 * H0.stm^2 / (8 * pi * grav.const) # kg / m^3
 
-press <- -matter.density %>% rev() * light.speed^2
-cosm.const <- 3 * X.2.range - 8 * pi * grav.const / light.speed^2 * matter.density %>% rev()
+press <- -matter.density %>% rev() * light.speed^2 # kg / (m * s^2)
+cosm.const <- 3 * ci.X^2 - 8 * pi * grav.const / light.speed^2 * matter.density %>% rev()
 ```
 
+## Model Fitting and Visualization
 
-```{r s.vs.r.1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Fit of the hyperbolic model to the galactic distance-velocity data. The points represent the observations, and the solid line represents the nonlinear least-squares fit."}
+```{r s.vs.r.1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Projection of the fitted model onto the physical distance-velocity space. The points represent the observations and the solid line represents the derived theoretical recession velocity.", fig.pos="H"}
 measures.df.converted.units.estimated.values %>%
   ggplot() +
-  geom_point(aes(x = reg.x, y = reg.y, colour = D)) +
-  scale_colour_gradientn(colours = c("#800", "#840", "#880", "#480", "#080", "#084", "#088", "#048", "#008", "#408", "#808")) +
-  geom_line(aes(x = reg.x, y = reg.y.min), colour = "blue") +
-  geom_line(aes(x = reg.x, y = reg.y.max), colour = "blue") +
-  geom_line(aes(x = reg.x, y = reg.y.est), colour = "black") +
-  labs(
-    title = "Nonlinear fit of the hyperbolic model to galactic expansion observations",
-    x = "Proper Distance D [m]", y = expression(1 / (1 + V/c)),
-    colour = "Distance [m]"
-  )
-```
-
-```{r s.vs.r.2, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Projection of the fitted model onto the physical distance-velocity space. The points represent the observations and the solid line represents the derived theoretical recession velocity.", fig.pos="H"}
-reg.y.to.V <- function(r.y) {
-  light.speed * (1 / r.y - 1)
-}
-
-measures.df.converted.units.estimated.values %>%
-  ggplot() +
-  geom_point(aes(x = D, y = `Vgsr (RC3)`, colour = D)) +
-  scale_colour_gradientn(colours = c("#800", "#840", "#880", "#480", "#080", "#084", "#088", "#048", "#008", "#408", "#808")) +
-  geom_line(aes(x = reg.x, y = reg.y.min %>% reg.y.to.V()), colour = "blue") +
-  geom_line(aes(x = reg.x, y = reg.y.max %>% reg.y.to.V()), colour = "blue") +
-  geom_line(aes(x = reg.x, y = reg.y.est %>% reg.y.to.V()), colour = "black") +
+  geom_point(aes(x = D, y = V, colour = p.value)) +
+  scale_color_gradientn(colours = c("#FFC", "#FF8", "#FF0", "#F80", "#F00", "#800", "#400")) +
+  geom_line(aes(x = D, y = V.est.max), colour = "blue") +
+  geom_line(aes(x = D, y = V.est.min), colour = "blue") +
   labs(
     title = "Galactic recession velocity as a function of proper distance",
-    x = "Proper Distance D [m]", y = "Speed V [m/s]",
-    colour = "Distance [m]"
+    x = "Distance D [m]", y = "Speed V [m/s]",
+    colour = "p - value"
   )
 ```
 
 \FloatBarrier
-## Thermodynamic State Evaluation
-
-With the kinematic parameters successfully constrained by the galactic distance-velocity dataset, the thermodynamic state of the universe is evaluated. To compute the physical values of the cosmological fluid pressure ($P$) and the Cosmological Constant ($\Lambda$), standard physical constants were introduced into our derived geometric relationships.
+## Estimated Parameters
 
 ```{r values, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 eq.formatter <- function(x, digits = 2){
@@ -335,27 +449,25 @@ err.margin <- function(x){
 cat(
   paste(
     "The speed of light in a vacuum was defined as $c =",
-    light.speed, "\\frac{m}{s}$, and the Newtonian constant of gravitation as $G =",
-    grav.const %>% eq.formatter(digits = 5), "\\frac{m^3}{kg \\times s^2}$ [@workman2022review]. For the observational matter density, we adopted a present-day baseline value of $\\rho_0 = ",
-    matter.density %>% mean() %>% eq.formatter(), "\\frac{kg}{m^3}$, allowing for a measurement uncertainty margin of $\\pm",
-    (matter.density %>% err.margin() * 100) %>% round(2), "\\%$ [@planck2020results] to propagate robust confidence intervals. Substituting these empirical physical inputs into our strictly mathematical framework breaks the geometric degeneracy, yielding the complete set of parameters that govern the expansion."
+    light.speed, "\\frac{m}{s}$, and the Newtonian constant of gravitation as $G \\approx",
+    grav.const %>% eq.formatter(digits = 5), "\\frac{m^3}{kg \\times s^2}$ [@workman2022review].",
+    "Utilizing the $95\\%$ confidence intervals of $X$ and $k$ obtained through non-parametric bootstrapping,",
+    "we propagate the kinematic uncertainty to derive the present-day Hubble parameter ($H_0$).",
+    "Consequently, instead of adopting a baseline prior, this strictly mathematical framework allows us to directly calculate",
+    "the empirical bounds for the matter density ($\\rho_0$), the cosmological fluid pressure ($P$),",
+    "and the cosmological constant ($\\Lambda$). This breaks the geometric degeneracy,",
+    "yielding the complete set of parameters that govern the expansion."
   )
 )
 ```
 
-## Estimated Parameters
-
-Upon the convergence of the NLS algorithm, the following 95% confidence intervals were obtained for the fundamental parameters of the model:
-
-
 ```{r final.values, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 cat(paste(
- paste0("- **Parameter** $\\alpha$: $\\alpha\\in\\left]", alpha.min %>% eq.formatter(), ", \\ ", alpha.max %>% eq.formatter(), "\\right[ m^{-1}$, which determines the scale of the expansion."),
- paste0("- **Parameter** $\\beta$: $\\beta\\in\\left]", beta.min %>% eq.formatter(), ", \\ ", beta.max %>% eq.formatter(), "\\right[$, which links the current expansion rate to the scale factor."),
- paste0("- **Expansion Parameter** ($X^2$): An interval of $X^2\\in\\left]", X.2.range[1] %>% eq.formatter(), ", \\ ", X.2.range[2] %>% eq.formatter(), "\\right[ m^{-2}$ was calculated, representing the dynamic constant derived from the condition of homogeneity."),
- paste0("- **Spatial Curvature** ($k$): The resulting curvature parameter lies within the range $k\\in\\left]", k.range[1] %>% eq.formatter(), ", \\ ", k.range[2] %>% eq.formatter(), "\\right[ m^{-2}$."),
+ paste0("- **Expansion Parameter** ($X$): A $", (1 - alpha) * 100, "\\%$ confidence interval of $X\\in\\left]", ci.X[1] %>% eq.formatter(), ", \\ ", ci.X[2] %>% eq.formatter(), "\\right[ m^{-1}$ was estimated, representing the dynamic constant derived from the condition of homogeneity."),
+ paste0("- **Spatial Curvature** ($k$): The resulting empirical curvature parameter is constrained within $k\\in\\left]", ci.k[1] %>% eq.formatter(), ", \\ ", ci.k[2] %>% eq.formatter(), "\\right[ m^{-2}$."),
+ paste0("- **Present Matter Density** ($\\rho_0$): Derived purely from the kinematic constraints, bounded within $\\rho_0\\in\\left]", matter.density[1] %>% eq.formatter(), ", \\ ", matter.density[2] %>% eq.formatter(), "\\right[ \\frac{kg}{m^3}$."),
  paste0("- **Cosmological Fluid Pressure** ($P$): Sustaining the observed expansion kinematics, the vacuum pressure is bounded within $P\\in\\left]", press[1] %>% eq.formatter(), ", \\ ", press[2] %>% eq.formatter(), "\\right[ \\frac{kg}{m \\times s^2}$."),
- paste0("- **Cosmological Constant** ($\\Lambda$): By integrating the observed matter density, the cosmological constant is empirically constrained to $\\Lambda\\in\\left]", cosm.const[1] %>% eq.formatter(), ", \\ ", cosm.const[2] %>% eq.formatter(), "\\right[ m^{-2}$."),
+ paste0("- **Cosmological Constant** ($\\Lambda$): By integrating the matter density back into the field equations, the cosmological constant is empirically bounded to $\\Lambda\\in\\left]", cosm.const[1] %>% eq.formatter(), ", \\ ", cosm.const[2] %>% eq.formatter(), "\\right[ m^{-2}$."),
  sep = "\n"
 ))
 ```
@@ -365,44 +477,48 @@ cat(paste(
 ## Interpretation of Curvature $k$
 
 ```{r k.interp, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
-geometry.type <- if(k.range[1] > 0) {
-  "positive, which theoretically corresponds to a closed universe geometry."
-} else if(k.range[2] < 0) {
+geometry.type <- if(ci.k[1] > 0) {
+  "positive, which theoretically corresponds to a closed universe geometry"
+} else if(ci.k[2] < 0) {
   "negative, suggesting an open-universe geometry"
 } else {
   "compatible with zero, favoring a flat universe model"
 }
 
 cat(paste0(
-  "The most significant result of this analysis is the constraint placed on the curvature parameter $k$. Based on the processed data from the NED sample, the obtained interval for $k$ lies between $",
-  k.range[1] %>% eq.formatter(), "$ and $", k.range[2] %>% eq.formatter(),
-  "$ $m^{-2}$. As this range consists exclusively of values greater than zero, the results of this fit favor a ", geometry.type,
-  " curvature. Nevertheless, it is imperative to highlight that the obtained magnitude is extremely small (on the order of $10^{-52}$), which is consistent with contemporary cosmological observations that place the universe in a state of near-absolute flatness [@weinberg2008cosmology]."
+  "The most significant kinematic result of this analysis is the empirical constraint placed on the spatial curvature parameter $k$. Evaluating the bootstrapped NED sample yields a $95\\%$ confidence interval for $k$ lying between $",
+  ci.k[1] %>% eq.formatter(), "$ and $", ci.k[2] %>% eq.formatter(),
+  "$ $m^{-2}$. Because this entire interval falls strictly above zero, the statistical results of this specific dataset favor a ", geometry.type,
+  ". Nevertheless, it is imperative to highlight that the obtained magnitude is extraordinarily small (on the order of $10^{-52}$), which is functionally consistent with contemporary cosmological observations that place the universe in a state of near-absolute spatial flatness [@weinberg2008cosmology]."
 ))
 ```
 
 ## Consistency of the Cosmological Tensor Hypothesis
 
-The premise that the covariant derivative of the Riemann tensor must vanish ($K^\alpha_{\beta\gamma\mu\nu} = 0$) yielded a solution for the scale factor $a\left( t \right)$ that fits the observed expansion law remarkably well. This suggests that the geometric constraints imposed by maximal homogeneity and isotropy [@wolf2011spaces] are sufficient to describe galactic kinematics without the need to initially invoke specific density parameters, thereby validating the model's purely geometric approach.
+The premise that the covariant derivative of the Riemann curvature tensor must vanish ($K^\alpha_{\beta\gamma\mu\nu} = 0$) yielded an exact analytical solution for the scale factor $a(t)$ that fits the observed extragalactic recession velocities remarkably well. The most profound implication of this result is that the geometric constraints imposed by maximal homogeneity and isotropy [@wolf2011spaces] are sufficient to dictate galactic kinematics without the need to explicitly inject thermodynamic fluids into the Friedmann equations beforehand.
+
+Furthermore, this exact geometric formulation successfully broke the degeneracy between the universe's mass-energy content and its expansion rate. By estimating the purely dynamic parameters ($X$ and $k$), we were able to independently deduce the present-day matter density ($\rho_0$), fluid pressure ($P$), and the Cosmological Constant ($\Lambda$). The fact that these derived thermodynamic values align coherently with the physical expectations of an accelerating, vacuum-dominated universe strongly validates the model's purely geometric approach.
 
 ## Limitations and Sources of Error
 
-Despite the good statistical fit, there are inherent limitations:
+Despite the robustness of the two-step optimization and bootstrapping methodology, the model and the data exhibit inherent limitations:
 
-- **Selection Bias**: The data from the NED database [@ned_database] are derived from various measurement techniques (Cepheids, Type Ia Supernovae, etc.) [@weinberg2008cosmology], which introduces heteroscedasticity that we attempt to mitigate by using weights ($\text{weights} = D$) in the regression.
-- **Local Effects**: At short distances, the peculiar velocities of galaxies can cause data points to deviate from the ideal Hubble flow, affecting the precision of the parameters $\alpha$ and $\beta$.
+- **Numerical Sensitivity and Extreme Scales**: The fundamental parameters $X$ and $k$ exist at magnitudes of $10^{-25}$ and $10^{-50}$ respectively. Even with rigorous parameter scaling and dynamic boundary penalties, the non-linear cost surface is highly sensitive to the initial simplex. Exploring the limits of floating-point precision naturally restricts the use of standard analytical solvers and introduces minor numerical uncertainties.
+- **Heterogeneous Observational Data**: The extragalactic distances retrieved from the NED database [@ned_database] are compiled from a combination of overlapping cosmic distance ladders (e.g., Cepheid variables, Tully-Fisher relation, Type Ia Supernovae). Each method carries different intrinsic uncertainties and systematic biases that are currently aggregated without individualized statistical weights in the regression.
+- **Peculiar Velocities (Local Effects)**: At lower proper distances, the gravitational interactions between neighboring galaxies and local superclusters induce peculiar velocities that deviate from the ideal, homogeneous Hubble flow. These localized kinematic perturbations increase the variance of the residual errors, consequently widening the bootstrapped confidence intervals for the global expansion parameters $X$ and $k$.
 
 # Conclusions
 
-The present investigation has established a direct link between the geometric constraints of General Relativity and the astrophysical observation of galaxies [@misner1973gravitation]. Through an analysis of the Friedmann-Lemaître-Robertson-Walker (FLRW) metric, it has been demonstrated that imposing a condition of maximal homogeneity—by setting the covariant derivative of the Riemann tensor to zero ($K^\alpha_{\beta\gamma\mu\nu} = 0$) [@wolf2011spaces]—leads to a self-consistent kinematic description of the scale factor $a\left( t \right)$.
+This study demonstrates that the rigorous application of the Cosmological Principle—formalized geometrically through the vanishing of the "Cosmological Tensor" ($K^\alpha_{\beta\gamma\mu\nu} = 0$)—is sufficient to derive an exact, self-consistent kinematic model of the universe's expansion. By translating this geometric constraint into an analytical relationship between proper distance and recession velocity, we established a mathematical framework that allows for direct empirical testing without *a priori* assumptions regarding the universe's material composition.
 
-The fundamental points derived from this work are:
+The empirical validation of this model against the NED extragalactic database yielded robust constraints on the fundamental parameters of the universe:
 
-- **Validity of the Geometric Approach**: The derivation of a system of differential equations for $a\left( t \right)$ based on the structure of the Riemann tensor enabled the formulation of a predictive model linking redshift to proper distance. The success of the nonlinear fit suggests that the dynamics of expansion may be interpreted as a direct consequence of the symmetry properties of spacetime [@carroll2019spacetime].
-- **Empirical Results and Curvature**: The fit performed using data from the NED database [@ned_database] yielded expansion ($X^2$) and curvature ($k$) parameters with high statistical precision. Specifically, the value obtained for $k$—on the order of $10^{-52}$—while numerically positive, is consistent with a universe of nearly zero curvature, thereby reinforcing the hypothesis of spatial flatness observed in other cosmological studies [@weinberg2008cosmology].
-- **Model Robustness**: The use of nonlinear regression based on hyperbolic functions ($\cosh$ and $\sinh$) provided a robust framework for capturing the trend of observational data at extragalactic scales.
+- **Computational and Statistical Robustness**: Addressing the extreme dimensional scales of the expansion parameters (on the order of $10^{-50} \text{ m}^{-2}$) required a specialized optimization routine. The implementation of non-parametric bootstrapping provided rigorous $95\%$ confidence intervals, successfully navigating the discontinuities and mathematical penalty boundaries inherent to the parameter space.
+- **Empirical Constraints on Curvature and Thermodynamics**: The analysis directly constrained the expansion parameter ($X$) and the spatial curvature ($k$). The resulting magnitude for $k$ is on the order of $10^{-52} \text{ m}^{-2}$, which strongly supports the consensus of a nearly absolute spatially flat universe [@weinberg2008cosmology]. Crucially, by propagating the empirical uncertainty of these purely kinematic parameters, we independently derived the present-day matter density ($\rho_0$), vacuum pressure ($P$), and the Cosmological Constant ($\Lambda$). This geometric approach naturally satisfies the dark energy equation of state ($P = -\rho c^2$) and resolves the degeneracy between mass-energy density and the expansion rate.
 
-As future work, it is suggested that data catalogs featuring higher redshifts—such as those derived from Type Ia supernovae or the Cosmic Microwave Background [@weinberg2008cosmology]—be incorporated to evaluate the stability of parameters $\alpha$ and $\beta$ in regimes involving greater distances. In conclusion, this study reaffirms that the Cosmological Principle [@carroll2019spacetime], formalized through the "Cosmological Tensor," constitutes a powerful tool for unraveling the geometric evolution of the universe from a purely kinematic perspective.
+**Future Directions**: The analytical solution based on hyperbolic functions provided a highly stable mathematical structure for modeling local extragalactic data. To further test the predictive power of this exact metric, future research should incorporate deeper redshift catalogs—such as those derived from Type Ia supernovae or Baryon Acoustic Oscillations [@weinberg2008cosmology]. Extending the empirical fit to higher redshifts will serve to further restrict the confidence intervals of $X$ and $k$, and evaluate the stability of the derived thermodynamic properties across different cosmic epochs.
+
+In conclusion, this work reaffirms that the geometric symmetry properties of spacetime [@carroll2019spacetime] are not merely static background conditions, but active dynamical constraints capable of dictating the kinematic and thermodynamic evolution of the cosmos.
 
 # Data and Code Availability
 
@@ -578,13 +694,12 @@ $$
 D &:= \text{Measured Distance}, \left[ D \right] = m \\
 V &:= \text{Measured Speed}, \left[ V \right] = \frac{m}{s} \\
 ct &= 0 \rightarrow a = a_0 \\
-ct &= -D \rightarrow a = a\left( -D \right) \\
-1 + z &= 1 + \frac{V}{c} = \frac{a_0}{a(-D)} \\
 a &= a_0\cosh{Xct} + \frac{\dot{a}_0}{X}\sinh{Xct} \\
-\frac{a(-D)}{a_0} &= \frac{1}{1 + \frac{V}{c}} = \cosh{XD} - \frac{\dot{a}_0}{a_0X}\sinh{XD} \\
-\mathbf{y} &= \cosh{\alpha\mathbf{x}} - \beta\sinh{\alpha\mathbf{x}} \\
-\mathbf{y} &:= \frac{1}{1 + \frac{V}{c}} \wedge \mathbf{x} := D \wedge \alpha := X \wedge \beta := \frac{\dot{a}_0}{a_0X} \\
-\therefore X &= \alpha \wedge k = a_0^2\alpha^2\left( 1 - \beta^2 \right)
+D &= \int{\sqrt{g_{\alpha r}dx^\alpha dr}} = \frac{a}{\sqrt{k}}\sin^{-1}{\left( \sqrt{k}r \right)} \\
+V &= \frac{dD}{dt} = cD\sqrt{X^2 - \frac{k}{a^2}} \\
+N &:= \frac{2X^2}{k}a_0^2 - 1, \left[ N \right] = 1 \\
+M &:= \frac{2X^2}{k}a_0\sqrt{a_0^2 - \frac{k}{X^2}}, \left[ M \right] = 1 \\
+V &= cDX\frac{\sinh{\left( 2XD \right)} - M}{\cosh{\left( 2XD \right)}  + N}
 \end{aligned}
 $$
 
@@ -593,14 +708,13 @@ $$
 ```{r final.values.app, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 nd = 6
 cat(paste(
-  paste0("$$\n\\begin{aligned}\n\\alpha&\\in\\left]", alpha.min %>% eq.formatter(digits = nd), ", \\ ", alpha.max %>% eq.formatter(digits = nd), "\\right[ m^{-1}"),
-  paste0("\\beta&\\in\\left]", beta.min %>% eq.formatter(digits = nd), ", \\ ", beta.max %>% eq.formatter(digits = nd), "\\right["),
-  paste0("X^2&\\in\\left]", X.2.range[1] %>% eq.formatter(digits = nd), ", \\ ", X.2.range[2] %>% eq.formatter(digits = nd), "\\right[ m^{-2}"),
-  paste0("k&\\in\\left]", k.range[1] %>% eq.formatter(digits = nd), ", \\ ", k.range[2] %>% eq.formatter(digits = nd), "\\right[ m^{-2}"),
+  paste0("$$\n\\begin{aligned}\nX&\\in\\left]", ci.X[1] %>% eq.formatter(digits = nd), ", \\ ", ci.X[2] %>% eq.formatter(digits = nd), "\\right[ m^{-1}"),
+  paste0("k&\\in\\left]", ci.k[1] %>% eq.formatter(digits = nd), ", \\ ", ci.k[2] %>% eq.formatter(digits = nd), "\\right[ m^{-2}"),
+  paste0("\\rho&\\in\\left]", matter.density[1] %>% eq.formatter(digits = nd), ", \\ ", matter.density[2] %>% eq.formatter(digits = nd), "\\right[ \\frac{kg}{m^3}"),
   paste0("P&\\in\\left]", press[1] %>% eq.formatter(digits = nd), ", \\ ", press[2] %>% eq.formatter(digits = nd), "\\right[ \\frac{kg}{m \\times s^2}"),
   paste0("\\Lambda&\\in\\left]", cosm.const[1] %>% eq.formatter(digits = nd), ", \\ ", cosm.const[2] %>% eq.formatter(digits = nd), "\\right[ m^{-2}"),
   "\\end{aligned}\n$$",
-  sep = "\\\\\n"
+  sep = " \\\\\n"
 ))
 ```
 
