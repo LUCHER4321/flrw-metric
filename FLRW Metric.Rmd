@@ -553,7 +553,7 @@ $$
 ## Christoffel Symbols
 
 $$
-\Gamma^\alpha_{\beta\gamma}=\frac{1}{2}g^{\alpha\sigma}\left( g_{\beta\sigma,\gamma} + g_{\gamma\sigma,\beta} - g_{\beta\gamma,\sigma} \right)
+\Gamma^\alpha_{\beta\gamma} = \frac{1}{2}g^{\alpha\sigma}\left( g_{\beta\sigma,\gamma} + g_{\gamma\sigma,\beta} - g_{\beta\gamma,\sigma} \right)
 $$
 
 $$
